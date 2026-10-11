@@ -1,6 +1,27 @@
-<!doctype html>
-<html lang="ja">
-<meta charset="utf-8">
-<title>IKS</title>
-<h1>ただいま準備中です</h1>
-</html>
+<script>
+(function () {
+  var hero = document.querySelector('.visual-hero');
+  var button = document.querySelector('.motion-toggle');
+
+  if (!hero || !button) return;
+
+  button.addEventListener('click', function () {
+    var paused = hero.classList.toggle('paused');
+
+    button.setAttribute('aria-pressed', String(paused));
+    button.setAttribute(
+      'aria-label',
+      paused
+        ? '表紙のアニメーションを再開'
+        : '表紙のアニメーションを一時停止'
+    );
+
+    button.querySelector('path').setAttribute(
+      'd',
+      paused
+        ? 'M5 3l8 5-8 5z'
+        : 'M5 3v10M11 3v10'
+    );
+  });
+})();
+</script>

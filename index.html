@@ -1,27 +1,981 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="建設業・商社・販売店の紙とExcelによる業務を、専用アプリで効率化。IKSの受託開発・導入運用支援。">
+<title>IKS | 工事の業務改善を、アプリで。</title>
+<script>document.documentElement.lang = "ja";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Montserrat:wght@600;700&display=swap">
+<style>
+/* 白とごく薄いグレーの面に、紺の文字と青の差し色だけ。中心は「建設業のお困りごと」をアニメーションで説明する再生枠。ご要望により白背景で統一 */
+:root{
+  color-scheme:light;
+  --bg:#ffffff;--soft:#f5f7f9;--ink:#13213d;--text:#1f2733;--muted:#5d6776;--line:#e3e7ec;
+  --accent:#1f5fd1;--accent-soft:#eaf1fc;--white:#ffffff;
+  --font:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --font-en:"Montserrat","Noto Sans JP",sans-serif;
+  --wrap:1160px;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.9;letter-spacing:.03em;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{color:var(--ink);line-height:1.4}
+h1,h2,h3,p,li,dd,td,th,summary{word-break:auto-phrase;line-break:strict}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+.nw{white-space:nowrap}
+.ico{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.draft{background:#fff7d6;color:#5b4a00;font-size:.78rem;text-align:center;padding-block:6px;padding-inline:16px}
+
+.head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.head .wrap{display:flex;align-items:center;gap:28px;padding-block:14px;position:relative}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand svg{width:34px;height:34px}
+.brand b{font-family:var(--font-en);font-size:1.4rem;color:var(--ink);letter-spacing:.06em}
+.brand small{font-size:.72rem;color:var(--muted);border-left:1px solid var(--line);padding-left:10px;line-height:1.45}
+.nav{display:flex;gap:26px;margin-left:auto;font-size:.88rem;font-weight:500}
+.nav a{text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-weight:700;font-size:.92rem;text-decoration:none;border-radius:4px;padding:14px 26px;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.btn-main{background:var(--ink);color:var(--white)}
+.btn-main:hover{background:var(--accent)}
+.btn-sub{background:var(--white);border-color:var(--ink);color:var(--ink)}
+.btn-sub:hover{border-color:var(--accent);color:var(--accent)}
+.btn-white{background:var(--white);color:var(--ink)}
+.btn-sm{padding:10px 18px;font-size:.85rem}
+.menu-btn{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:4px;padding:8px 12px;font:inherit;font-size:.85rem;color:var(--ink)}
+@media (max-width:960px){
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--white);flex-direction:column;gap:0;padding:8px 24px 16px;border-bottom:1px solid var(--line)}
+  .nav.open{display:flex}
+  .nav a{padding-block:12px;border-bottom:1px solid var(--line)}
+  .menu-btn{display:block}
+  .head .btn-cta{display:none}
+}
+.page[hidden]{display:none!important}
+
+section{padding-block:96px}
+.soft{background:var(--soft)}
+.eyebrow{font-family:var(--font-en);font-size:.75rem;font-weight:700;letter-spacing:.18em;color:var(--accent)}
+.sec-head{display:grid;gap:12px;margin-bottom:48px;max-width:46em}
+.sec-head.center{text-align:center;justify-items:center;margin-inline:auto}
+.sec-head h2{font-size:clamp(1.55rem,3vw,2.1rem);font-weight:900}
+.sec-head p{color:var(--muted)}
+
+/* 表紙 */
+.hero .wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center;padding-block:84px 96px}
+.hero-copy{min-width:0}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;font-size:.82rem;font-weight:700;color:var(--ink);background:var(--soft);border-radius:4px;padding:6px 14px;white-space:nowrap}
+.hero-tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.hero-title{font-size:min(3.1rem,4.15vw);font-weight:900;line-height:1.28;margin-top:22px;letter-spacing:.01em}
+.hero-title .ln{display:block;overflow:hidden;white-space:nowrap;padding-bottom:.05em}
+.hero-title .ln-in{display:inline-block;animation:lineUp .9s cubic-bezier(.2,.75,.2,1) both}
+.hero-title .ln:nth-child(2) .ln-in{animation-delay:.15s}
+.hero-title .ln:nth-child(3) .ln-in{animation-delay:.3s}
+.hero-title em{font-style:normal;color:var(--accent)}
+@keyframes lineUp{from{transform:translateY(105%)}to{transform:none}}
+.rotate-line{margin-top:22px;font-size:clamp(1rem,1.7vw,1.2rem);font-weight:700;color:var(--ink);display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.rotator{display:inline-block;height:1.7em;overflow:hidden;background:var(--ink);color:var(--white);border-radius:4px;padding-inline:12px}
+.rot-track{display:flex;flex-direction:column;animation:rot 12.5s cubic-bezier(.7,0,.3,1) infinite}
+.rot-track b{display:block;height:1.7em;line-height:1.7em;white-space:nowrap}
+@keyframes rot{0%,16%{transform:translateY(0)}20%,36%{transform:translateY(-1.7em)}40%,56%{transform:translateY(-3.4em)}60%,76%{transform:translateY(-5.1em)}80%,96%{transform:translateY(-6.8em)}100%{transform:translateY(-8.5em)}}
+.hero .lead{margin-top:18px;color:var(--muted);line-height:2}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.fade-in{animation:fadeUp .8s cubic-bezier(.2,.7,.2,1) both}
+.f1{animation-delay:.45s}.f2{animation-delay:.6s}.f3{animation-delay:.75s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.morph{background:var(--soft);border-radius:16px;padding:20px 16px 12px;min-width:0}
+.morph svg{display:block;width:100%;height:auto}
+.bf{animation:float 6s ease-in-out infinite}
+.bf2{animation-delay:-1.5s}.bf3{animation-delay:-3s}.bf4{animation-delay:-4.5s}
+.app{animation:float 7s ease-in-out -2s infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.app-ring{opacity:.3;animation:ring 2.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes ring{from{transform:scale(1);opacity:.4}to{transform:scale(1.6);opacity:0}}
+.mod rect{fill:rgba(255,255,255,.12);animation:modR 3s infinite;animation-delay:var(--d)}
+.mod use{stroke:#fff;fill:none;stroke-width:1.7;animation:modU 3s infinite;animation-delay:var(--d)}
+@keyframes modR{0%,30%,100%{fill:rgba(255,255,255,.12)}10%,20%{fill:#ffffff}}
+@keyframes modU{0%,30%,100%{stroke:#ffffff}10%,20%{stroke:#1f5fd1}}
+.dashflow{stroke-dasharray:4 7;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-22}}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-block:48px 64px}.hero-title{font-size:min(2.5rem,9vw)}}
+@media (max-width:560px){.hero .lead br{display:none}.hero-tag{font-size:.74rem}}
+
+.ticker{border-block:1px solid var(--line);overflow:hidden;padding-block:14px}
+.ticker-track{display:flex;gap:44px;width:max-content;animation:tick 40s linear infinite;font-size:.86rem;color:var(--muted)}
+.ticker-track span{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.ticker-track span::before{content:"";width:5px;height:5px;background:var(--accent)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* お困りごとの再生枠 */
+.player{display:grid;grid-template-columns:270px 1fr;gap:28px;align-items:start}
+.tabs{display:grid;gap:8px;min-width:0}
+.tab{position:relative;display:grid;grid-template-columns:2.2em 1fr;gap:4px;align-items:center;width:100%;text-align:left;font:inherit;font-weight:700;color:var(--muted);background:var(--white);border:1px solid var(--line);border-radius:6px;padding:14px 16px;cursor:pointer;overflow:hidden}
+.tab .n{font-family:var(--font-en);font-size:.8rem;color:#9aa3b0}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--ink)}
+.tab[aria-selected="true"] .n{color:var(--accent)}
+.tab .bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--accent)}
+.tab[aria-selected="true"] .bar{animation:bar 10s linear both}
+@keyframes bar{to{width:100%}}
+.stage{background:var(--white);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.scene-fig{position:relative;background:#f8fafc;border-bottom:1px solid var(--line)}
+.scene-fig svg{display:block;width:100%;height:auto}
+.state{position:absolute;top:14px;left:14px;display:grid}
+.state span{grid-area:1/1;font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:999px;white-space:nowrap}
+.state .s-bad{background:#fdecec;color:#c9363b}
+.state .s-good{background:var(--accent);color:var(--white);opacity:0}
+.scene-txt{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:22px 26px 26px}
+.scene-txt h3{grid-column:1/-1;font-size:1.3rem}
+.scene-txt div{min-width:0}
+.scene-txt small{display:inline-block;font-size:.75rem;font-weight:700;margin-bottom:4px}
+.scene-txt .t-bad small{color:#c9363b}
+.scene-txt .t-good small{color:var(--accent)}
+.scene-txt p{font-size:.92rem;color:var(--muted)}
+.scene-txt .t-good p{color:var(--text)}
+@media (max-width:900px){
+  .player{grid-template-columns:1fr}
+  .tabs{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;padding-bottom:4px}
+  .tab{white-space:nowrap}
+  .scene-txt{grid-template-columns:1fr}
+}
+.scene svg *{transform-box:fill-box;transform-origin:center}
+.sol{opacity:0}
+.play .k-pop{animation:pop .45s cubic-bezier(.2,.8,.3,1.25) var(--t,0s) both}
+.play .k-fade{animation:fade .5s ease var(--t,0s) both}
+.play .k-up{animation:up .5s ease var(--t,0s) both}
+.play .k-shake{animation:shake .6s ease var(--t,0s) 2}
+.play .k-flash{animation:flash .35s ease var(--t,0s) both}
+.play .k-draw{stroke-dasharray:300;animation:draw 1s ease var(--t,0s) both}
+.play .k-grow{transform-origin:left center;animation:grow 3.6s linear var(--t,0s) both}
+.play .k-search{animation:search 2.4s ease-in-out var(--t,0s) infinite}
+.play .k-blink{animation:blink 1s ease var(--t,0s) infinite}
+.play .prob{animation:out .5s ease 6s both}
+.play .sol{animation:fade .6s ease 6.4s both}
+.play .state .s-bad{animation:out .4s ease 6s both}
+.play .state .s-good{animation:fade .4s ease 6.4s both}
+.k-flash{opacity:0}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes out{to{opacity:0}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes flash{0%{opacity:0}40%{opacity:.95}100%{opacity:0}}
+@keyframes draw{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
+@keyframes grow{0%{transform:scaleX(0)}15%,25%{transform:scaleX(.3)}55%,65%{transform:scaleX(.68)}95%,100%{transform:scaleX(1)}}
+@keyframes search{0%,100%{transform:translate(0,0)}50%{transform:translate(-120px,30px)}}
+@keyframes blink{50%{opacity:.35}}
+
+/* 大きな帯 */
+.big{background:var(--ink);color:var(--white);padding-block:104px;text-align:center}
+.big .eyebrow{color:#9fb6e6}
+.big h2{color:var(--white);font-size:clamp(2.1rem,6vw,4.4rem);font-weight:900;line-height:1.25;margin-top:16px}
+.big h2 span{display:block;white-space:nowrap}
+.big h2 em{font-style:normal;box-shadow:inset 0 -.14em 0 var(--accent)}
+.swaps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:52px}
+.swap{display:grid;border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:18px 14px;min-width:0}
+.swap>*{grid-area:1/1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:1rem}
+.swap s{color:#9fb0cc;text-decoration-color:#ff8a8a;text-decoration-thickness:2px;animation:sw1 6s infinite;animation-delay:var(--d)}
+.swap b{color:var(--white);animation:sw2 6s infinite;animation-delay:var(--d)}
+.swap b::before{content:"";width:20px;height:20px;border-radius:50%;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4 4 8-8'/%3E%3C/svg%3E") center/13px no-repeat;flex:none}
+@keyframes sw1{0%,30%{opacity:1}40%,90%{opacity:0}100%{opacity:1}}
+@keyframes sw2{0%,30%{opacity:0}40%,90%{opacity:1}100%{opacity:0}}
+.big .ctas{justify-content:center;margin-top:44px}
+@media (max-width:860px){.swaps{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.swaps{grid-template-columns:1fr}}
+
+/* カード類 */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:28px 26px;display:grid;gap:12px;align-content:start;min-width:0}
+.card h3{font-size:1.12rem}
+.card p{font-size:.9rem;color:var(--muted)}
+.icon-box{width:52px;height:52px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.num{font-family:var(--font-en);font-weight:700;font-size:.85rem;color:var(--accent);letter-spacing:.1em}
+@media (max-width:1000px){.grid4{grid-template-columns:1fr 1fr}}
+@media (max-width:860px){.grid3,.grid2{grid-template-columns:1fr}}
+@media (max-width:560px){.grid4{grid-template-columns:1fr}}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.9rem}
+.checks li{display:flex;gap:10px;align-items:flex-start}
+.checks li::before{content:"";flex:none;width:18px;height:18px;margin-top:4px;border-radius:50%;background:var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f5fd1' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4 4 8-8'/%3E%3C/svg%3E") center/12px no-repeat}
+
+/* 仕事の輪 */
+.solution{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.solution>div{min-width:0}
+.ringfig{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px}
+.ringfig svg{display:block;width:100%;height:auto}
+.ring-run{stroke-dasharray:100;stroke-dashoffset:100;animation:run 14s linear infinite}
+@keyframes run{to{stroke-dashoffset:0}}
+.wk circle{fill:#fff;stroke:#1f5fd1;stroke-width:1.5;animation:wkC 14s infinite;animation-delay:inherit}
+.wk use{stroke:#1f5fd1;fill:none;stroke-width:1.6;animation:wkU 14s infinite;animation-delay:inherit}
+@keyframes wkC{0%,10%{fill:#1f5fd1}16%,100%{fill:#fff}}
+@keyframes wkU{0%,10%{stroke:#fff}16%,100%{stroke:#1f5fd1}}
+.points{display:grid;gap:10px;margin-top:26px}
+.point{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:14px 16px;font-weight:700;color:var(--ink);font-size:.92rem;background:var(--white)}
+.point .ico{color:var(--accent);width:22px;height:22px}
+@media (max-width:900px){.solution{grid-template-columns:1fr}}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);counter-reset:s;border-top:2px solid var(--ink)}
+.steps li{counter-increment:s;padding:24px 22px 8px 0;min-width:0}
+.steps li::before{content:"STEP 0" counter(s);display:block;font-family:var(--font-en);font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.steps b{display:block;color:var(--ink);font-size:1.08rem;margin-top:6px}
+.steps span{display:block;font-size:.88rem;color:var(--muted);margin-top:6px}
+@media (max-width:900px){.steps{grid-template-columns:1fr 1fr;gap:8px 20px}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}}
+
+.product{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:28px}
+.product>div{min-width:0}
+.product .cat{font-size:.78rem;font-weight:700;color:var(--accent)}
+.product h3{font-size:1.7rem;font-weight:900;margin-top:4px}
+.product h3 small{font-family:var(--font-en);font-size:.75rem;letter-spacing:.2em;color:var(--muted);margin-left:8px;font-weight:600}
+.product p{font-size:.9rem;color:var(--muted);margin-top:8px}
+.product .soon{display:inline-block;margin-top:14px;font-size:.8rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:3px 10px}
+.product img{display:block;width:100%;border-radius:6px;border:1px solid var(--line)}
+@media (max-width:860px){.product{grid-template-columns:1fr}}
+
+.cta{background:var(--soft);padding-block:72px}
+.cta-box{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;border:1px solid var(--line);background:var(--white);border-radius:10px;padding:40px}
+.cta h2{font-size:clamp(1.3rem,2.4vw,1.7rem)}
+.cta p{color:var(--muted);font-size:.92rem;margin-top:6px}
+@media (max-width:600px){.cta-box{padding:28px 20px}}
+
+/* 下層ページ */
+.page-head{border-bottom:1px solid var(--line);padding-block:72px 56px}
+.crumb{font-size:.78rem;color:var(--muted)}
+.page-head h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;margin-top:10px}
+.page-head p{color:var(--muted);margin-top:12px;max-width:44em}
+.compare{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--white)}
+.compare table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+.compare th,.compare td{padding:16px 20px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.compare thead th{background:var(--soft);color:var(--ink);font-size:.85rem}
+.compare thead th.after{background:var(--ink);color:var(--white)}
+.compare tbody th{color:var(--ink);width:8em;white-space:nowrap}
+.compare td{color:var(--muted)}
+.compare td.after{color:var(--text);background:var(--accent-soft);font-weight:500}
+.compare tr:last-child>*{border-bottom:0}
+.case-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.who{font-size:.8rem;color:var(--muted)}
+.badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:4px;background:var(--accent-soft);color:var(--accent)}
+.badge.gray{background:var(--soft);color:var(--muted)}
+.from{font-size:.8rem;color:var(--muted);background:var(--soft);border-radius:4px;padding:6px 10px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips span{border:1px solid var(--line);border-radius:4px;padding:8px 16px;font-size:.88rem;background:var(--white)}
+.faq{max-width:820px;margin-inline:auto;display:grid;gap:10px}
+.faq details{background:var(--white);border:1px solid var(--line);border-radius:6px;padding:18px 22px}
+.faq summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;display:flex;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"Q";font-family:var(--font-en);color:var(--accent)}
+.faq p{margin-top:10px;color:var(--muted);font-size:.9rem;padding-left:1.6em}
+.contact{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:start}
+.contact>*{min-width:0}
+form{display:grid;gap:18px}
+.field{display:grid;gap:6px;font-size:.88rem;font-weight:700;color:var(--ink)}
+.req{font-size:.7rem;color:var(--white);background:var(--accent);border-radius:3px;padding:1px 6px;margin-left:6px;font-weight:500}
+input,textarea{font:inherit;font-weight:400;font-size:.95rem;color:var(--text);background:var(--white);border:1px solid #cdd5e1;border-radius:4px;padding:12px 14px;width:100%}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+textarea{min-height:140px;resize:vertical}
+.radios{display:flex;flex-wrap:wrap;gap:10px}
+.radios label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:4px;padding:10px 14px;font-weight:500;color:var(--text);cursor:pointer}
+.radios input{width:auto}
+.form-msg{background:var(--accent-soft);color:var(--ink);border-radius:4px;padding:12px 16px;font-size:.88rem}
+.profile{width:100%;border-collapse:collapse;font-size:.88rem}
+.profile th,.profile td{text-align:left;vertical-align:top;padding:12px 0;border-bottom:1px solid var(--line)}
+.profile th{width:6.5em;color:var(--muted);font-weight:500}
+.ph{color:var(--muted)}
+@media (max-width:900px){.contact{grid-template-columns:1fr}}
+
+.foot{background:var(--ink);color:#c5cfe0;padding-block:40px 28px;font-size:.84rem}
+.foot .wrap{display:grid;gap:24px}
+.foot-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px}
+.foot .brand b{color:var(--white)}
+.foot .brand small{color:#9fb0cc;border-color:#2a3b62}
+.foot nav{display:flex;flex-wrap:wrap;gap:20px}
+.foot a{text-decoration:none}
+.foot a:hover{color:var(--white)}
+.copy{border-top:1px solid #26365a;padding-top:18px;font-size:.75rem;color:#8a9bbb}
+
+.js .reveal{transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .7s}
+.js .reveal:not(.in){transform:translateY(20px);opacity:.4}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .reveal:not(.in){transform:none;opacity:1}
+  .sol,.state .s-good{display:none}
+}
+
+body{margin:0}
+.visual-hero{position:relative;background:radial-gradient(ellipse at 65% 45%,#e9f2ff,transparent 60%),#f7f9fc;overflow:hidden;padding:32px 0 48px}
+.visual-hero .wrap{max-width:1300px}
+.visual-hero svg{display:block;width:100%;height:auto}
+.visual-hero svg *{transform-box:fill-box;transform-origin:center}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.paper-chaos{animation:paperChaos 12s ease-in-out infinite}
+.paper-chaos:nth-child(2){animation-delay:.18s}.paper-chaos:nth-child(3){animation-delay:.36s}
+.old-system{animation:oldSystem 12s ease-in-out infinite}
+.transfer{stroke-dasharray:8 12;animation:transfer 12s ease-in-out infinite}
+.new-system{animation:newSystem 12s ease-in-out infinite}
+.complete{animation:complete 12s ease-in-out infinite}
+.orbit-dot{animation:orbitDot 12s ease-in-out infinite}
+@keyframes paperChaos{0%,24%{opacity:1;transform:translate(0,0) rotate(-3deg)}12%{transform:translate(8px,-10px) rotate(3deg)}40%,85%{opacity:0;transform:translate(300px,0) scale(.3)}96%,100%{opacity:1;transform:none}}
+@keyframes oldSystem{0%,24%,96%,100%{opacity:1}42%,85%{opacity:.15}}
+@keyframes transfer{0%,23%,88%,100%{opacity:0;stroke-dashoffset:100}35%,75%{opacity:1;stroke-dashoffset:-100}}
+@keyframes newSystem{0%,24%,100%{opacity:.15;transform:translateY(14px)}44%,86%{opacity:1;transform:none}}
+@keyframes complete{0%,42%,100%{opacity:0;transform:scale(.65)}52%,86%{opacity:1;transform:scale(1)}}
+@keyframes orbitDot{0%,24%,85%,100%{opacity:0;transform:translateX(0)}34%{opacity:1}65%{opacity:1;transform:translateX(225px)}75%{opacity:0;transform:translateX(225px)}}
+.motion-toggle{position:absolute;bottom:16px;right:24px;width:40px;height:40px;background:white;border:1px solid #dbe4ef;border-radius:50%;color:#13213d;cursor:pointer;display:grid;place-items:center}
+.motion-toggle svg{width:16px;height:16px}
+.visual-hero.paused *{animation-play-state:paused!important}
+@media(max-width:600px){.visual-hero{padding:64px 0 72px}.visual-hero .wrap{padding-inline:8px}.visual-hero svg{min-height:250px}}
+@media(prefers-reduced-motion:reduce){.paper-chaos,.old-system{opacity:.45}.new-system,.complete{opacity:1;transform:none}.transfer{opacity:1}.orbit-dot,.motion-toggle{display:none}}
+
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0l10 5-10 5z" fill="#1f5fd1"/></marker></defs>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 4a2 2 0 1 1 4 0v2h4v4h-2a2 2 0 1 0 0 4h2v4h-4v-2a2 2 0 1 0-4 0v2H6v-4H4a2 2 0 1 1 0-4h2V6h4z"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20c0 1-1.5 2-4 2h-2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-app" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 8h18M8 8v13"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3z"/><path d="M14.5 6.5L17 4l3 3-2.5 2.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M5.5 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14 10h4M14 13.5h3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></symbol>
+  <symbol id="i-helmet" viewBox="0 0 24 24"><path d="M4 17a8 8 0 0 1 16 0"/><path d="M2.5 17h19v2.5h-19z"/><path d="M10 9.5V6.5h4v3"/></symbol>
+  <symbol id="i-bill" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol>
+  <symbol id="i-yen" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 7l3.5 5 3.5-5M12 12v6M9 13h6M9 16h6"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4M4 13a8 8 0 0 0 14.6 4"/><path d="M5 3v4h4M19 21v-4h-4"/></symbol>
+</svg>
+
+<div class="draft">確認用の下書きです（［　］はあとで正式な情報に差し替えます）</div>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="7" fill="#13213d"/><path d="M9 11h6M9 17h6M9 23h6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M19 23l6-12" stroke="#5b8ff0" stroke-width="2.6" stroke-linecap="round"/><circle cx="25" cy="23" r="2" fill="#5b8ff0"/></svg>
+      <b>IKS</b><small>工事の業務改善を、<br>アプリで。</small>
+    </a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">メニュー</button>
+    <nav class="nav" id="nav" aria-label="メインメニュー">
+      <a href="#top" data-nav="top">トップ</a>
+      <a href="#development" data-nav="development">受託アプリ開発</a>
+      <a href="#support" data-nav="support">導入・運用支援</a>
+      <a href="#products" data-nav="top">自社サービス</a>
+      <a href="#contact" data-nav="contact">お問い合わせ</a>
+    </nav>
+    <a class="btn btn-main btn-sm btn-cta" href="#contact">無料で相談する<svg><use href="#i-arrow"/></svg></a>
+  </div>
+</header>
+
+<main>
+<!-- ===================== トップ ===================== -->
+<div class="page" data-page="top">
+<section class="visual-hero" aria-labelledby="hero-heading">
+<h1 id="hero-heading" class="sr-only">紙とExcelの煩雑な管理を、ひとつの業務アプリへ。</h1>
+<div class="wrap"><svg viewBox="0 0 1200 540" role="img" aria-labelledby="hero-svg-title hero-svg-desc">
+<title id="hero-svg-title">紙と表計算の業務がアプリで整理されるアニメーション</title>
+<desc id="hero-svg-desc">散らばった書類、表計算、重複作業がひとつのアプリに集まり、整理された情報をパソコンとスマートフォンで共有します。</desc>
+<defs><filter id="hero-shadow" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#163158" flood-opacity=".10"/></filter></defs>
+<ellipse cx="310" cy="465" rx="245" ry="22" fill="#dce5ef" opacity=".5"/>
+<ellipse cx="900" cy="465" rx="235" ry="22" fill="#dce7f6" opacity=".6"/>
+<g class="old-system"><path d="M155 185C320 60 470 145 410 305S155 370 250 230" fill="none" stroke="#df9192" stroke-width="2" stroke-dasharray="5 8"/>
+<rect x="205" y="170" width="268" height="190" rx="12" fill="#536377"/><rect x="216" y="181" width="246" height="164" rx="5" fill="white"/>
+<path d="M180 360h318l-22 25H202z" fill="#a9b7c7"/><rect x="216" y="181" width="246" height="28" rx="4" fill="#24845d"/>
+<circle cx="230" cy="194" r="3" fill="#fff" opacity=".7"/><circle cx="241" cy="194" r="3" fill="#fff" opacity=".7"/>
+<path d="M227 224h224" stroke="#d6e4dd"/><path d="M227 246h224" stroke="#d6e4dd"/><path d="M227 268h224" stroke="#d6e4dd"/><path d="M227 290h224" stroke="#d6e4dd"/><path d="M227 312h224" stroke="#d6e4dd"/><path d="M227 334h224" stroke="#d6e4dd"/><path d="M227 215v120" stroke="#d6e4dd"/><path d="M272 215v120" stroke="#d6e4dd"/><path d="M317 215v120" stroke="#d6e4dd"/><path d="M362 215v120" stroke="#d6e4dd"/><path d="M407 215v120" stroke="#d6e4dd"/><rect x="273" y="247" width="88" height="21" fill="#ffe4de"/><path d="M312 252l10 10m0-10l-10 10" stroke="#cd7275" stroke-width="2"/></g><g class="paper-chaos"><g transform="translate(80 210) rotate(-13)" filter="url(#hero-shadow)"><rect width="112" height="145" rx="5" fill="white" stroke="#d1dbe6"/><path d="M17 25h45M17 43h78M17 59h68M17 75h78M17 91h50" stroke="#afbdcb" stroke-width="5" stroke-linecap="round"/><rect x="17" y="112" width="26" height="15" rx="3" fill="#f5d6cb"/></g></g><g class="paper-chaos"><g transform="translate(135 100) rotate(10)" filter="url(#hero-shadow)"><rect width="112" height="145" rx="5" fill="white" stroke="#d1dbe6"/><path d="M17 25h45M17 43h78M17 59h68M17 75h78M17 91h50" stroke="#afbdcb" stroke-width="5" stroke-linecap="round"/><rect x="17" y="112" width="26" height="15" rx="3" fill="#f5d6cb"/></g></g><g class="paper-chaos"><g transform="translate(95 325) rotate(-6)" filter="url(#hero-shadow)"><rect width="112" height="145" rx="5" fill="white" stroke="#d1dbe6"/><path d="M17 25h45M17 43h78M17 59h68M17 75h78M17 91h50" stroke="#afbdcb" stroke-width="5" stroke-linecap="round"/><rect x="17" y="112" width="26" height="15" rx="3" fill="#f5d6cb"/></g></g><g class="old-system" stroke="#d2857e" fill="none" stroke-width="3"><circle cx="461" cy="122" r="23"/><path d="M461 107v16l10 6"/><path d="M490 410l20-35 20 35z"/><path d="M510 385v12m0 5v2"/></g>
+<path class="transfer" d="M480 270C560 270 565 270 645 270" fill="none" stroke="#5289d9" stroke-width="3"/>
+<circle class="orbit-dot" cx="490" cy="270" r="6" fill="#397ce5"/>
+<g class="new-system" filter="url(#hero-shadow)">
+<rect x="657" y="112" width="390" height="290" rx="18" fill="#163158"/><rect x="669" y="124" width="366" height="262" rx="10" fill="white"/>
+<path d="M832 402v37h-55m55 0h80" fill="none" stroke="#a4b5ca" stroke-width="12" stroke-linecap="round"/>
+<path d="M679 124h346a10 10 0 0 1 10 10v26H669v-26a10 10 0 0 1 10-10" fill="#edf3fc"/>
+<circle cx="686" cy="142" r="4" fill="#397ce5"/><circle cx="700" cy="142" r="4" fill="#aec6e9"/><circle cx="714" cy="142" r="4" fill="#aec6e9"/>
+<rect x="683" y="175" width="52" height="195" rx="5" fill="#edf3fc"/>
+<g fill="none" stroke="#397ce5" stroke-width="2"><rect x="699" y="193" width="20" height="20" rx="4"/><path d="M709 193v20m-10-10h20"/><path d="M700 239h18m-18 7h18m-18 7h12"/><rect x="700" y="277" width="18" height="17" rx="3"/><path d="M700 282h18M700 319l7 7 12-15"/></g>
+<rect x="750" y="176" width="80" height="58" rx="7" fill="#f0f5fd"/><path d="M763 216v-12m12 12v-22m12 22v-17m12 17v-29" stroke="#75a1e2" stroke-width="6" stroke-linecap="round"/><rect x="842" y="176" width="80" height="58" rx="7" fill="#f0f5fd"/><path d="M855 216v-12m12 12v-22m12 22v-17m12 17v-29" stroke="#75a1e2" stroke-width="6" stroke-linecap="round"/><rect x="934" y="176" width="80" height="58" rx="7" fill="#f0f5fd"/><path d="M947 216v-12m12 12v-22m12 22v-17m12 17v-29" stroke="#75a1e2" stroke-width="6" stroke-linecap="round"/><rect x="750" y="250" width="264" height="29" rx="5" fill="#f5f8fc"/><rect x="763" y="260" width="100" height="7" rx="3" fill="#c1d2e8"/><rect x="885" y="260" width="74" height="7" rx="3" fill="#dce6f4"/><g class="complete"><circle cx="990" cy="265" r="9" fill="#dbf3e9"/><path d="M986 265l3 3 5-6" stroke="#298365" fill="none" stroke-width="2"/></g><rect x="750" y="288" width="264" height="29" rx="5" fill="#f5f8fc"/><rect x="763" y="298" width="100" height="7" rx="3" fill="#c1d2e8"/><rect x="885" y="298" width="74" height="7" rx="3" fill="#dce6f4"/><g class="complete"><circle cx="990" cy="303" r="9" fill="#dbf3e9"/><path d="M986 303l3 3 5-6" stroke="#298365" fill="none" stroke-width="2"/></g><rect x="750" y="326" width="264" height="29" rx="5" fill="#f5f8fc"/><rect x="763" y="336" width="100" height="7" rx="3" fill="#c1d2e8"/><rect x="885" y="336" width="74" height="7" rx="3" fill="#dce6f4"/><g class="complete"><circle cx="990" cy="341" r="9" fill="#dbf3e9"/><path d="M986 341l3 3 5-6" stroke="#298365" fill="none" stroke-width="2"/></g><rect x="1000" y="265" width="104" height="185" rx="17" fill="#163158"/><rect x="1007" y="272" width="90" height="170" rx="11" fill="white"/><rect x="1032" y="278" width="40" height="5" rx="3" fill="#163158"/><rect x="1018" y="301" width="68" height="36" rx="6" fill="#edf3fc"/>
+<path d="M1030 324v-10m12 10v-17m12 17v-12m12 12v-20" stroke="#75a1e2" stroke-width="5" stroke-linecap="round"/>
+<path d="M1019 355h65m-65 17h65m-65 17h45" stroke="#d2deee" stroke-width="6" stroke-linecap="round"/>
+<g class="complete"><circle cx="1052" cy="415" r="12" fill="#dbf3e9"/><path d="M1046 415l4 4 8-9" fill="none" stroke="#298365" stroke-width="3"/></g></g>
+<g class="complete"><circle cx="978" cy="97" r="27" fill="#287f63"/><path d="M966 97l8 8 16-18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+</svg></div><button class="motion-toggle" type="button" aria-label="表紙のアニメーションを一時停止" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="2"/></svg></button></section>
+  <div class="ticker" aria-label="アプリにできる工事の業務">
+    <div class="ticker-track">
+      <span>見積書の作成</span><span>原価・利益率管理</span><span>工程管理</span><span>現場調査・報告書</span><span>現場写真の整理</span><span>施工台帳・工事台帳</span><span>職人・協力会社の手配</span><span>部材の発注</span><span>商品の受注・出荷</span><span>出来高請求</span><span>請求・入金管理</span><span>日報</span><span>安全書類</span>
+      <span aria-hidden="true">見積書の作成</span><span aria-hidden="true">原価・利益率管理</span><span aria-hidden="true">工程管理</span><span aria-hidden="true">現場調査・報告書</span><span aria-hidden="true">現場写真の整理</span><span aria-hidden="true">施工台帳・工事台帳</span><span aria-hidden="true">職人・協力会社の手配</span><span aria-hidden="true">部材の発注</span><span aria-hidden="true">商品の受注・出荷</span><span aria-hidden="true">出来高請求</span><span aria-hidden="true">請求・入金管理</span><span aria-hidden="true">日報</span><span aria-hidden="true">安全書類</span>
+    </div>
+  </div>
+
+  <section class="soft" id="problems">
+    <div class="wrap">
+      <div class="sec-head reveal"><div class="eyebrow">PROBLEM</div><h2>建設業でよくある、<br>こんなお困りごと</h2><p>工事の仕事で毎日のように起きていることを、アニメーションでご紹介します。アプリにするとどう変わるかも、あわせてご覧ください。</p></div>
+      <div class="player">
+        <div class="tabs" role="tablist" aria-label="お困りごと">
+          <button class="tab" role="tab" aria-selected="true"><span class="n">01</span>Excel管理が限界<i class="bar"></i></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="n">02</span>現場と事務所で情報がずれる<i class="bar"></i></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="n">03</span>現場写真の整理に追われる<i class="bar"></i></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="n">04</span>同じ内容を何度も入力<i class="bar"></i></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="n">05</span>現場ごとの利益が見えない<i class="bar"></i></button>
+        </div>
+        <div class="stage">
+
+          <div class="scene play" role="tabpanel">
+            <div class="scene-fig">
+              <div class="state"><span class="s-bad">よくある状態</span><span class="s-good">アプリなら</span></div>
+              <svg viewBox="0 0 640 340" role="img" aria-label="同じ工程表のExcelファイルが何本も増え、どれが最新か分からなくなる様子と、アプリでひとつにまとまった様子">
+                <g class="prob">
+                  <g class="k-pop" style="--t:.2s"><rect x="130" y="56" width="250" height="62" rx="6" fill="#fff" stroke="#d6dde6"/><rect x="130" y="56" width="250" height="18" rx="6" fill="#1f7a4d"/><text x="140" y="69" style="font:700 10px var(--font);fill:#fff">工程表.xlsx</text></g>
+                  <g class="k-pop" style="--t:.8s"><rect x="156" y="82" width="250" height="62" rx="6" fill="#fff" stroke="#d6dde6"/><rect x="156" y="82" width="250" height="18" rx="6" fill="#1f7a4d"/><text x="166" y="95" style="font:700 10px var(--font);fill:#fff">工程表_最新.xlsx</text></g>
+                  <g class="k-pop" style="--t:1.4s"><rect x="182" y="108" width="250" height="62" rx="6" fill="#fff" stroke="#d6dde6"/><rect x="182" y="108" width="250" height="18" rx="6" fill="#1f7a4d"/><text x="192" y="121" style="font:700 10px var(--font);fill:#fff">工程表_最新(2).xlsx</text></g>
+                  <g class="k-pop" style="--t:2s"><rect x="208" y="134" width="250" height="62" rx="6" fill="#fff" stroke="#d6dde6"/><rect x="208" y="134" width="250" height="18" rx="6" fill="#1f7a4d"/><text x="218" y="147" style="font:700 10px var(--font);fill:#fff">工程表_修正版_山田.xlsx</text></g>
+                  <g class="k-pop" style="--t:2.6s"><rect x="234" y="160" width="250" height="80" rx="6" fill="#fff" stroke="#1f7a4d" stroke-width="1.5"/><rect x="234" y="160" width="250" height="18" rx="6" fill="#1f7a4d"/><text x="244" y="173" style="font:700 10px var(--font);fill:#fff">工程表_最終_これが最新.xlsx</text>
+                    <path d="M234 200h250M234 220h250M300 178v62M390 178v62" stroke="#e3e8ee"/>
+                    <text x="244" y="214" style="font:400 10px var(--font);fill:#5d6776">A邸</text><text x="308" y="214" style="font:400 10px var(--font-en);fill:#5d6776">10/15</text>
+                    <g class="k-shake" style="--t:3.6s"><text x="400" y="214" style="font:700 10px var(--font-en);fill:#e5484d">#REF!</text></g>
+                  </g>
+                  <g class="k-pop" style="--t:3.2s"><rect x="470" y="60" width="140" height="42" rx="21" fill="#e5484d"/><path d="M500 100l-8 14 20-12z" fill="#e5484d"/><text x="540" y="86" text-anchor="middle" style="font:700 14px var(--font);fill:#fff">どれが最新？</text></g>
+                  <g class="k-up" style="--t:4.2s"><text x="320" y="292" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">ファイルが増えるたびに、確認の電話も増えていく…</text></g>
+                </g>
+                <g class="sol">
+                  <g class="k-pop" style="--t:6.6s"><rect x="210" y="56" width="300" height="196" rx="12" fill="#fff" stroke="#d6dde6"/><rect x="210" y="56" width="300" height="38" rx="12" fill="#13213d"/><rect x="210" y="80" width="300" height="14" fill="#13213d"/><text x="228" y="81" style="font:700 13px var(--font);fill:#fff">工程表</text><rect x="420" y="66" width="76" height="20" rx="10" fill="#16a34a"/><text x="458" y="80" text-anchor="middle" style="font:700 10px var(--font);fill:#fff">常に最新</text></g>
+                  <g class="k-up" style="--t:6.9s"><text x="228" y="124" style="font:500 11px var(--font);fill:#1f2733">A邸 新築工事</text><text x="490" y="124" text-anchor="end" style="font:700 11px var(--font-en);fill:#1f5fd1">10/15〜</text><path d="M228 136h264" stroke="#eef1f5"/></g>
+                  <g class="k-up" style="--t:7.1s"><text x="228" y="160" style="font:500 11px var(--font);fill:#1f2733">Bビル 改修工事</text><text x="490" y="160" text-anchor="end" style="font:700 11px var(--font-en);fill:#1f5fd1">10/22〜</text><path d="M228 172h264" stroke="#eef1f5"/></g>
+                  <g class="k-up" style="--t:7.3s"><text x="228" y="196" style="font:500 11px var(--font);fill:#1f2733">C工場 設備工事</text><text x="490" y="196" text-anchor="end" style="font:700 11px var(--font-en);fill:#1f5fd1">11/05〜</text><text x="228" y="234" style="font:400 10px var(--font);fill:#5d6776">計算は自動。式が壊れる心配もなし</text></g>
+                  <g class="k-pop" style="--t:7.6s"><path d="M150 100H210M150 154H210M150 208H210" stroke="#1f5fd1" stroke-width="1.5" stroke-dasharray="3 4"/><circle cx="128" cy="100" r="22" fill="#eaf1fc"/><circle cx="128" cy="154" r="22" fill="#eaf1fc"/><circle cx="128" cy="208" r="22" fill="#eaf1fc"/><g style="font:700 11px var(--font);fill:#1f5fd1" text-anchor="middle"><text x="128" y="104">営業</text><text x="128" y="158">工事</text><text x="128" y="212">事務</text></g></g>
+                  <g class="k-up" style="--t:8s"><text x="360" y="296" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">データはひとつ。誰が開いても最新です</text></g>
+                </g>
+              </svg>
+            </div>
+            <div class="scene-txt">
+              <h3>Excel管理が限界</h3>
+              <div class="t-bad"><small>よくある状態</small><p>現場ごと・担当ごとにファイルが増え、「最新」「最新(2)」「修正版」…。どれが正しいか分からず、計算式もいつのまにか壊れている。</p></div>
+              <div class="t-good"><small>アプリなら</small><p>データはアプリにひとつだけ。誰が開いても常に最新で、計算は自動。式が壊れる心配もありません。</p></div>
+            </div>
+          </div>
+
+          <div class="scene" role="tabpanel" hidden>
+            <div class="scene-fig">
+              <div class="state"><span class="s-bad">よくある状態</span><span class="s-good">アプリなら</span></div>
+              <svg viewBox="0 0 640 340" role="img" aria-label="現場で変わった工程が電話で伝わらず、事務所の予定表が古いままになる様子と、アプリで全員の予定がすぐそろう様子">
+                <text x="120" y="56" text-anchor="middle" style="font:700 12px var(--font);fill:#5d6776">現場</text>
+                <text x="525" y="56" text-anchor="middle" style="font:700 12px var(--font);fill:#5d6776">事務所</text>
+                <g class="prob">
+                  <g><circle cx="120" cy="172" r="20" fill="#fff" stroke="#13213d" stroke-width="2"/><path d="M98 168a22 22 0 0 1 44 0z" fill="#f5b700"/><path d="M88 238c4-24 16-36 32-36s28 12 32 36z" fill="#fff" stroke="#13213d" stroke-width="2"/></g>
+                  <g class="k-pop" style="--t:.3s"><rect x="36" y="74" width="196" height="44" rx="10" fill="#fff" stroke="#13213d"/><path d="M110 117l6 12 8-12z" fill="#fff" stroke="#13213d"/><text x="134" y="101" text-anchor="middle" style="font:700 13px var(--font);fill:#13213d">搬入を10/18に変更！</text></g>
+                  <path class="k-draw" style="--t:1.1s" d="M170 190H440" stroke="#9aa6b8" stroke-width="2" fill="none"/>
+                  <g class="k-up" style="--t:1.6s"><text x="305" y="176" text-anchor="middle" style="font:500 12px var(--font);fill:#5d6776">電話で伝えたつもり…</text></g>
+                  <g class="k-pop" style="--t:2.4s"><circle cx="305" cy="190" r="14" fill="#e5484d"/><path d="M299 184l12 12M311 184l-12 12" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></g>
+                  <g><rect x="450" y="110" width="150" height="120" rx="8" fill="#fff" stroke="#d6dde6"/><rect x="450" y="110" width="150" height="26" rx="8" fill="#eef1f5"/><text x="462" y="128" style="font:700 11px var(--font);fill:#13213d">予定表</text><text x="462" y="166" style="font:500 11px var(--font);fill:#5d6776">A邸 搬入</text><text x="462" y="200" style="font:700 22px var(--font-en);fill:#13213d">10/15</text></g>
+                  <g class="k-pop" style="--t:3.1s"><g transform="rotate(-10 560 196)"><rect x="522" y="180" width="74" height="28" rx="4" fill="#fff" stroke="#e5484d" stroke-width="2"/><text x="559" y="199" text-anchor="middle" style="font:700 12px var(--font);fill:#e5484d">古いまま</text></g></g>
+                  <g class="k-up" style="--t:4s"><rect x="170" y="262" width="300" height="40" rx="20" fill="#fdecec"/><text x="320" y="287" text-anchor="middle" style="font:700 13px var(--font);fill:#c9363b">職人さんが10/15に来てしまう…</text></g>
+                </g>
+                <g class="sol">
+                  <g class="k-pop" style="--t:6.6s"><rect x="70" y="86" width="100" height="170" rx="16" fill="#fff" stroke="#13213d" stroke-width="2"/><text x="120" y="122" text-anchor="middle" style="font:500 10px var(--font);fill:#5d6776">現場のスマホ</text><text x="120" y="160" text-anchor="middle" style="font:500 11px var(--font);fill:#5d6776">A邸 搬入</text><text x="120" y="190" text-anchor="middle" style="font:700 20px var(--font-en);fill:#13213d">10/18</text><circle cx="120" cy="222" r="11" fill="#16a34a"/><path d="M115 222l4 4 7-8" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></g>
+                  <g class="k-pop" style="--t:7s"><circle cx="312" cy="172" r="38" fill="#13213d"/><use href="#i-sync" x="294" y="154" width="36" height="36" style="stroke:#fff;fill:none;stroke-width:1.8"/></g>
+                  <path class="k-draw" style="--t:7s" d="M175 172H272M352 172H445" stroke="#1f5fd1" stroke-width="2" fill="none"/>
+                  <g class="k-pop" style="--t:7.4s"><rect x="450" y="110" width="150" height="120" rx="8" fill="#fff" stroke="#1f5fd1" stroke-width="1.5"/><rect x="450" y="110" width="150" height="26" rx="8" fill="#eaf1fc"/><text x="462" y="128" style="font:700 11px var(--font);fill:#13213d">事務所のパソコン</text><text x="462" y="166" style="font:500 11px var(--font);fill:#5d6776">A邸 搬入</text><text x="462" y="200" style="font:700 22px var(--font-en);fill:#13213d">10/18</text><circle cx="578" cy="194" r="11" fill="#16a34a"/><path d="M573 194l4 4 7-8" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></g>
+                  <g class="k-up" style="--t:8s"><text x="320" y="296" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">変更は、すぐに全員の画面へ</text></g>
+                </g>
+              </svg>
+            </div>
+            <div class="scene-txt">
+              <h3>現場と事務所で情報がずれる</h3>
+              <div class="t-bad"><small>よくある状態</small><p>工程の変更を電話で伝えたつもりが、事務所の予定表は古いまま。職人さんや業者さんに間違った日程が伝わってしまう。</p></div>
+              <div class="t-good"><small>アプリなら</small><p>現場がスマホで変更すれば、事務所の画面にもすぐ反映。関係者全員が同じ予定を見られます。</p></div>
+            </div>
+          </div>
+
+          <div class="scene" role="tabpanel" hidden>
+            <div class="scene-fig">
+              <div class="state"><span class="s-bad">よくある状態</span><span class="s-good">アプリなら</span></div>
+              <svg viewBox="0 0 640 340" role="img" aria-label="撮りためた現場写真が整理されずに山積みになり探せない様子と、アプリで現場ごとに自動で整理される様子">
+                <g class="prob">
+                  <g><rect x="50" y="130" width="84" height="62" rx="10" fill="#13213d"/><rect x="70" y="120" width="30" height="12" rx="3" fill="#13213d"/><circle cx="92" cy="161" r="18" fill="#2c3d63" stroke="#fff" stroke-width="2"/><circle cx="92" cy="161" r="8" fill="#9fb6e6"/></g>
+                  <rect class="k-flash" style="--t:.3s" x="40" y="110" width="104" height="92" rx="12" fill="#fff"/>
+                  <rect class="k-flash" style="--t:1.1s" x="40" y="110" width="104" height="92" rx="12" fill="#fff"/>
+                  <rect class="k-flash" style="--t:1.9s" x="40" y="110" width="104" height="92" rx="12" fill="#fff"/>
+                  <g fill="#fff" stroke="#c9d1dc">
+                    <g class="k-pop" style="--t:.4s"><g transform="rotate(-8 270 140)"><rect x="240" y="118" width="60" height="44" rx="3"/><path d="M246 154l14-14 10 10 8-6 16 10z" fill="#c9d1dc" stroke="none"/></g></g>
+                    <g class="k-pop" style="--t:.8s"><g transform="rotate(6 330 150)"><rect x="300" y="128" width="60" height="44" rx="3"/><path d="M306 164l14-14 10 10 8-6 16 10z" fill="#c9d1dc" stroke="none"/></g></g>
+                    <g class="k-pop" style="--t:1.2s"><g transform="rotate(-3 280 190)"><rect x="250" y="168" width="60" height="44" rx="3"/><path d="M256 204l14-14 10 10 8-6 16 10z" fill="#c9d1dc" stroke="none"/></g></g>
+                    <g class="k-pop" style="--t:1.6s"><g transform="rotate(10 350 200)"><rect x="320" y="178" width="60" height="44" rx="3"/><path d="M326 214l14-14 10 10 8-6 16 10z" fill="#c9d1dc" stroke="none"/></g></g>
+                    <g class="k-pop" style="--t:2s"><g transform="rotate(-12 300 230)"><rect x="270" y="208" width="60" height="44" rx="3"/><path d="M276 244l14-14 10 10 8-6 16 10z" fill="#c9d1dc" stroke="none"/></g></g>
+                    <g class="k-pop" style="--t:2.4s"><g transform="rotate(4 380 130)"><rect x="350" y="108" width="60" height="44" rx="3"/><path d="M356 144l14-14 10 10 8-6 16 10z" fill="#c9d1dc" stroke="none"/></g></g>
+                  </g>
+                  <g class="k-up" style="--t:2.6s"><text x="226" y="106" style="font:400 9px var(--font-en);fill:#5d6776">IMG_0231.jpg</text><text x="390" y="240" style="font:400 9px var(--font-en);fill:#5d6776">IMG_0587.jpg</text></g>
+                  <g class="k-pop" style="--t:3s"><rect x="440" y="62" width="170" height="42" rx="21" fill="#e5484d"/><path d="M490 102l-4 14 16-12z" fill="#e5484d"/><text x="525" y="88" text-anchor="middle" style="font:700 13px var(--font);fill:#fff">A邸の写真はどれ？</text></g>
+                  <g class="k-fade" style="--t:3.2s"><g class="k-search" style="--t:3.4s"><circle cx="510" cy="170" r="24" fill="rgba(255,255,255,.6)" stroke="#13213d" stroke-width="4"/><path d="M527 187l20 20" stroke="#13213d" stroke-width="6" stroke-linecap="round"/></g></g>
+                  <g class="k-up" style="--t:4.2s"><text x="320" y="300" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">報告書を作るたびに、写真探しから…</text></g>
+                </g>
+                <g class="sol">
+                  <g class="k-pop" style="--t:6.6s"><rect x="56" y="64" width="160" height="182" rx="10" fill="#fff" stroke="#d6dde6"/><rect x="56" y="64" width="160" height="30" rx="10" fill="#13213d"/><rect x="56" y="82" width="160" height="12" fill="#13213d"/><text x="70" y="84" style="font:700 12px var(--font);fill:#fff">A邸 新築</text></g>
+                  <g class="k-pop" style="--t:6.9s"><rect x="240" y="64" width="160" height="182" rx="10" fill="#fff" stroke="#d6dde6"/><rect x="240" y="64" width="160" height="30" rx="10" fill="#13213d"/><rect x="240" y="82" width="160" height="12" fill="#13213d"/><text x="254" y="84" style="font:700 12px var(--font);fill:#fff">Bビル 改修</text></g>
+                  <g class="k-pop" style="--t:7.2s"><rect x="424" y="64" width="160" height="182" rx="10" fill="#fff" stroke="#d6dde6"/><rect x="424" y="64" width="160" height="30" rx="10" fill="#13213d"/><rect x="424" y="82" width="160" height="12" fill="#13213d"/><text x="438" y="84" style="font:700 12px var(--font);fill:#fff">C工場 設備</text></g>
+                  <g class="k-fade" style="--t:7.4s" fill="#c9d1dc">
+                    <rect x="70" y="106" width="62" height="44" rx="3"/><rect x="140" y="106" width="62" height="44" rx="3"/><rect x="70" y="158" width="62" height="44" rx="3"/><rect x="140" y="158" width="62" height="44" rx="3"/>
+                    <rect x="254" y="106" width="62" height="44" rx="3"/><rect x="324" y="106" width="62" height="44" rx="3"/><rect x="254" y="158" width="62" height="44" rx="3"/><rect x="324" y="158" width="62" height="44" rx="3"/>
+                    <rect x="438" y="106" width="62" height="44" rx="3"/><rect x="508" y="106" width="62" height="44" rx="3"/><rect x="438" y="158" width="62" height="44" rx="3"/><rect x="508" y="158" width="62" height="44" rx="3"/>
+                  </g>
+                  <g class="k-up" style="--t:7.7s">
+                    <rect x="70" y="214" width="46" height="20" rx="10" fill="#eaf1fc"/><text x="93" y="228" text-anchor="middle" style="font:700 9.5px var(--font);fill:#1f5fd1">着工前</text><rect x="122" y="214" width="46" height="20" rx="10" fill="#eaf1fc"/><text x="145" y="228" text-anchor="middle" style="font:700 9.5px var(--font);fill:#1f5fd1">施工中</text>
+                    <rect x="254" y="214" width="46" height="20" rx="10" fill="#eaf1fc"/><text x="277" y="228" text-anchor="middle" style="font:700 9.5px var(--font);fill:#1f5fd1">施工中</text><rect x="306" y="214" width="46" height="20" rx="10" fill="#eaf1fc"/><text x="329" y="228" text-anchor="middle" style="font:700 9.5px var(--font);fill:#1f5fd1">完了</text>
+                    <rect x="438" y="214" width="46" height="20" rx="10" fill="#eaf1fc"/><text x="461" y="228" text-anchor="middle" style="font:700 9.5px var(--font);fill:#1f5fd1">着工前</text>
+                  </g>
+                  <g class="k-up" style="--t:8.1s"><text x="320" y="296" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">撮った写真は、現場ごと・工程ごとに自動で整理</text></g>
+                </g>
+              </svg>
+            </div>
+            <div class="scene-txt">
+              <h3>現場写真の整理に追われる</h3>
+              <div class="t-bad"><small>よくある状態</small><p>撮りためた写真が「IMG_0231」のまま何百枚も。報告書を作るたびに、どの現場の写真かを探すところから始まる。</p></div>
+              <div class="t-good"><small>アプリなら</small><p>撮った写真は現場ごと・工程ごとに自動で整理。報告書にもそのまま使えます。</p></div>
+            </div>
+          </div>
+
+          <div class="scene" role="tabpanel" hidden>
+            <div class="scene-fig">
+              <div class="state"><span class="s-bad">よくある状態</span><span class="s-good">アプリなら</span></div>
+              <svg viewBox="0 0 640 340" role="img" aria-label="現場調査のメモを報告書・見積書・請求書へ何度も書き写して転記ミスが起きる様子と、アプリで一度の入力が自動で反映される様子">
+                <g class="prob">
+                  <g class="k-pop" style="--t:.2s"><rect x="28" y="80" width="120" height="140" rx="6" fill="#fef3c7" stroke="#e8d38a"/><text x="40" y="104" style="font:700 12px var(--font);fill:#6b5310">現調メモ</text><text x="40" y="150" style="font:500 11px var(--font);fill:#6b5310">天井高</text><text x="40" y="174" style="font:700 15px var(--font-en);fill:#6b5310">6,200</text></g>
+                  <g class="k-pop" style="--t:1.1s"><rect x="184" y="80" width="120" height="140" rx="6" fill="#fff" stroke="#d6dde6"/><text x="196" y="104" style="font:700 12px var(--font);fill:#13213d">報告書</text><text x="196" y="150" style="font:500 11px var(--font);fill:#5d6776">天井高</text><text x="196" y="174" style="font:700 15px var(--font-en);fill:#13213d">6,200</text></g>
+                  <g class="k-pop" style="--t:2s"><rect x="340" y="80" width="120" height="140" rx="6" fill="#fff" stroke="#d6dde6"/><text x="352" y="104" style="font:700 12px var(--font);fill:#13213d">見積書</text><text x="352" y="150" style="font:500 11px var(--font);fill:#5d6776">天井高</text><text x="352" y="174" style="font:700 15px var(--font-en);fill:#13213d">6,200</text></g>
+                  <g class="k-pop" style="--t:2.9s"><rect x="496" y="80" width="120" height="140" rx="6" fill="#fff" stroke="#d6dde6"/><text x="508" y="104" style="font:700 12px var(--font);fill:#13213d">請求書</text><text x="508" y="150" style="font:500 11px var(--font);fill:#5d6776">天井高</text><g class="k-shake" style="--t:3.7s"><text x="508" y="174" style="font:700 15px var(--font-en);fill:#e5484d">6,020</text></g></g>
+                  <g class="k-fade" style="--t:.9s"><path d="M150 150h28" stroke="#1f5fd1" stroke-width="2" marker-end="url(#arr)"/></g>
+                  <g class="k-fade" style="--t:1.8s"><path d="M306 150h28" stroke="#1f5fd1" stroke-width="2" marker-end="url(#arr)"/></g>
+                  <g class="k-fade" style="--t:2.7s"><path d="M462 150h28" stroke="#1f5fd1" stroke-width="2" marker-end="url(#arr)"/></g>
+                  <g class="k-up" style="--t:1.3s"><rect x="196" y="232" width="96" height="22" rx="11" fill="#eef1f5"/><text x="244" y="247" text-anchor="middle" style="font:700 10.5px var(--font);fill:#5d6776">書き写し 1回目</text></g>
+                  <g class="k-up" style="--t:2.2s"><rect x="352" y="232" width="96" height="22" rx="11" fill="#eef1f5"/><text x="400" y="247" text-anchor="middle" style="font:700 10.5px var(--font);fill:#5d6776">書き写し 2回目</text></g>
+                  <g class="k-up" style="--t:3.1s"><rect x="508" y="232" width="96" height="22" rx="11" fill="#fdecec"/><text x="556" y="247" text-anchor="middle" style="font:700 10.5px var(--font);fill:#c9363b">書き写し 3回目</text></g>
+                  <g class="k-up" style="--t:4.3s"><text x="320" y="300" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">手間がかかるうえに、転記ミスも起きる</text></g>
+                </g>
+                <g class="sol">
+                  <g class="k-pop" style="--t:6.6s"><rect x="56" y="90" width="150" height="140" rx="14" fill="#fff" stroke="#13213d" stroke-width="2"/><text x="131" y="118" text-anchor="middle" style="font:700 11px var(--font);fill:#1f5fd1">現場で1回だけ入力</text><text x="131" y="160" text-anchor="middle" style="font:500 11px var(--font);fill:#5d6776">天井高</text><text x="131" y="190" text-anchor="middle" style="font:700 22px var(--font-en);fill:#13213d">6,200</text></g>
+                  <path class="k-draw" style="--t:7s" d="M210 160C260 160 270 92 360 92M210 160H360M210 160C260 160 270 228 360 228" stroke="#1f5fd1" stroke-width="2" fill="none"/>
+                  <g class="k-pop" style="--t:7.4s"><rect x="368" y="68" width="210" height="48" rx="8" fill="#fff" stroke="#d6dde6"/><text x="384" y="97" style="font:700 12px var(--font);fill:#13213d">報告書</text><text x="500" y="97" style="font:700 12px var(--font-en);fill:#13213d">6,200</text><circle cx="556" cy="92" r="9" fill="#16a34a"/><path d="M552 92l3 3 6-6" stroke="#fff" stroke-width="2" fill="none"/></g>
+                  <g class="k-pop" style="--t:7.6s"><rect x="368" y="136" width="210" height="48" rx="8" fill="#fff" stroke="#d6dde6"/><text x="384" y="165" style="font:700 12px var(--font);fill:#13213d">見積書</text><text x="500" y="165" style="font:700 12px var(--font-en);fill:#13213d">6,200</text><circle cx="556" cy="160" r="9" fill="#16a34a"/><path d="M552 160l3 3 6-6" stroke="#fff" stroke-width="2" fill="none"/></g>
+                  <g class="k-pop" style="--t:7.8s"><rect x="368" y="204" width="210" height="48" rx="8" fill="#fff" stroke="#d6dde6"/><text x="384" y="233" style="font:700 12px var(--font);fill:#13213d">請求書</text><text x="500" y="233" style="font:700 12px var(--font-en);fill:#13213d">6,200</text><circle cx="556" cy="228" r="9" fill="#16a34a"/><path d="M552 228l3 3 6-6" stroke="#fff" stroke-width="2" fill="none"/></g>
+                  <g class="k-up" style="--t:8.2s"><text x="320" y="300" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">一度の入力が、書類すべてに自動で反映</text></g>
+                </g>
+              </svg>
+            </div>
+            <div class="scene-txt">
+              <h3>同じ内容を何度も入力</h3>
+              <div class="t-bad"><small>よくある状態</small><p>現場調査のメモを、報告書・見積書・請求書へと何度も書き写し。そのたびに手間がかかり、転記ミスも起こる。</p></div>
+              <div class="t-good"><small>アプリなら</small><p>現場で一度入力すれば、報告書・見積書・請求書に自動で反映。転記の手間もミスもなくなります。</p></div>
+            </div>
+          </div>
+
+          <div class="scene" role="tabpanel" hidden>
+            <div class="scene-fig">
+              <div class="state"><span class="s-bad">よくある状態</span><span class="s-good">アプリなら</span></div>
+              <svg viewBox="0 0 640 340" role="img" aria-label="工事中に原価がふくらみ、終わってから赤字に気づく様子と、アプリで現場ごとの利益がいつでも見える様子">
+                <g class="prob">
+                  <text x="60" y="84" style="font:700 14px var(--font);fill:#13213d">A邸 新築工事</text>
+                  <text x="60" y="130" style="font:500 12px var(--font);fill:#5d6776">見積</text>
+                  <rect x="120" y="112" width="380" height="28" rx="4" fill="#d6dde6"/><text x="490" y="131" text-anchor="end" style="font:700 12px var(--font-en);fill:#13213d">1,000万円</text>
+                  <text x="60" y="190" style="font:500 12px var(--font);fill:#5d6776">原価</text>
+                  <rect x="120" y="172" width="420" height="28" rx="4" fill="#eef1f5"/>
+                  <rect class="k-grow" style="--t:.4s" x="120" y="172" width="420" height="28" rx="4" fill="#13213d"/>
+                  <path d="M500 100v112" stroke="#9aa6b8" stroke-dasharray="3 3"/>
+                  <g style="font:500 10px var(--font);fill:#5d6776" text-anchor="middle"><text x="246" y="222">着工</text><text x="405" y="222">中間</text><text x="540" y="222">完了</text></g>
+                  <g class="k-pop" style="--t:1.2s"><rect x="190" y="236" width="180" height="34" rx="17" fill="#fff" stroke="#9aa6b8"/><text x="280" y="258" text-anchor="middle" style="font:700 12px var(--font);fill:#5d6776">今いくらかかってる？</text></g>
+                  <g class="k-pop" style="--t:4.2s"><g transform="rotate(-12 572 140)"><rect x="538" y="118" width="70" height="42" rx="4" fill="#fff" stroke="#e5484d" stroke-width="3"/><text x="573" y="147" text-anchor="middle" style="font:900 18px var(--font);fill:#e5484d">赤字</text></g></g>
+                  <g class="k-up" style="--t:4.6s"><text x="320" y="306" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">気づいたのは、工事が終わって集計してから</text></g>
+                </g>
+                <g class="sol">
+                  <g class="k-pop" style="--t:6.6s"><rect x="70" y="52" width="500" height="206" rx="10" fill="#fff" stroke="#d6dde6"/><text x="90" y="82" style="font:700 13px var(--font);fill:#13213d">現場ごとの利益率</text><text x="550" y="82" text-anchor="end" style="font:400 10px var(--font);fill:#5d6776">いま時点</text></g>
+                  <g class="k-up" style="--t:6.9s"><text x="90" y="120" style="font:500 11px var(--font);fill:#1f2733">A邸 新築</text><rect x="200" y="110" width="260" height="12" rx="6" fill="#eef1f5"/><rect x="200" y="110" width="190" height="12" rx="6" fill="#1f5fd1"/><text x="550" y="121" text-anchor="end" style="font:700 12px var(--font-en);fill:#16a34a">24%</text></g>
+                  <g class="k-up" style="--t:7.1s"><text x="90" y="160" style="font:500 11px var(--font);fill:#1f2733">Bビル 改修</text><rect x="200" y="150" width="260" height="12" rx="6" fill="#eef1f5"/><rect x="200" y="150" width="150" height="12" rx="6" fill="#1f5fd1"/><text x="550" y="161" text-anchor="end" style="font:700 12px var(--font-en);fill:#16a34a">31%</text></g>
+                  <g class="k-up" style="--t:7.3s"><text x="90" y="200" style="font:500 11px var(--font);fill:#1f2733">C工場 設備</text><rect x="200" y="190" width="260" height="12" rx="6" fill="#eef1f5"/><rect x="200" y="190" width="221" height="12" rx="6" fill="#ea8a1a"/><text x="550" y="201" text-anchor="end" style="font:700 12px var(--font-en);fill:#ea8a1a">8%</text></g>
+                  <g class="k-pop" style="--t:7.7s"><g class="k-blink" style="--t:8.2s"><rect x="230" y="216" width="270" height="28" rx="14" fill="#fff4e5" stroke="#ea8a1a"/><text x="365" y="235" text-anchor="middle" style="font:700 11px var(--font);fill:#b45309">原価が予算の85%に到達　早めに対策を</text></g></g>
+                  <g class="k-up" style="--t:8.2s"><text x="320" y="300" text-anchor="middle" style="font:700 15px var(--font);fill:#13213d">現場ごとの利益が、工事中でも見える</text></g>
+                </g>
+              </svg>
+            </div>
+            <div class="scene-txt">
+              <h3>現場ごとの利益が見えない</h3>
+              <div class="t-bad"><small>よくある状態</small><p>見積と実際の原価を比べられるのは、工事が終わって集計してから。赤字に気づいたときには手遅れ。</p></div>
+              <div class="t-good"><small>アプリなら</small><p>原価や出来高を入力すれば、現場ごとの利益率がいつでも見える。予算を超えそうな現場は早めに分かります。</p></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="big">
+    <div class="wrap">
+      <div class="eyebrow reveal">SOLUTION</div>
+      <h2 class="reveal"><span>そのお悩み、</span><span><em>アプリ</em>でまとめて</span><span>解決できます。</span></h2>
+      <div class="swaps reveal">
+        <div class="swap" style="--d:0s"><s>どれが最新？</s><b>いつでも最新</b></div>
+        <div class="swap" style="--d:.4s"><s>現場と事務所でずれる</s><b>全員が同じ情報</b></div>
+        <div class="swap" style="--d:.8s"><s>何度も書き写し</s><b>入力は一度だけ</b></div>
+        <div class="swap" style="--d:1.2s"><s>利益は完了後に判明</s><b>工事中に見える</b></div>
+      </div>
+      <div class="ctas reveal"><a class="btn btn-white" href="#contact">今の業務を相談してみる<svg><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal"><div class="eyebrow">FOR</div><h2>こんな会社さまの業務を<br>アプリにします</h2></div>
+      <div class="grid3">
+        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-helmet"/></svg></div><h3>建設会社・工務店</h3><p>見積・実行予算・工程・現場写真・出来高・請求入金。現場ごとの利益まで、ひとつの流れで管理します。</p></div>
+        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-tool"/></svg></div><h3>設備・電気・専門工事会社</h3><p>現場調査から見積、職人さんや協力会社の手配、施工台帳、請求まで。元請けごとの締め日・支払日にも合わせます。</p></div>
+        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-box"/></svg></div><h3>工事も受注する商社・販売店</h3><p>商品の販売と工事の受注を、別々の表で管理していませんか。物販と工事の見積・受注・請求をひとつにまとめます。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft">
+    <div class="wrap solution">
+      <div class="ringfig reveal">
+        <svg viewBox="0 0 520 420" role="img" aria-label="営業・現場調査から原価・利益までの工事の仕事が、ひとつの専用アプリでつながって回る図">
+          <circle cx="260" cy="210" r="140" fill="none" stroke="#e3ebf8" stroke-width="10"/>
+          <circle class="ring-run" transform="rotate(-90 260 210)" cx="260" cy="210" r="140" fill="none" stroke="#1f5fd1" stroke-width="3" stroke-linecap="round" pathLength="100"/>
+          <circle r="7" fill="#1f5fd1"><animateMotion dur="14s" repeatCount="indefinite" path="M260 70A140 140 0 1 1 259.99 70"/></circle>
+          <circle cx="260" cy="210" r="74" fill="#13213d"/>
+          <use href="#i-app" x="246" y="156" width="28" height="28" style="stroke:#8fb2f2;fill:none;stroke-width:1.6"/>
+          <text x="260" y="208" text-anchor="middle" style="font:700 15px var(--font);fill:#fff">御社専用アプリ</text>
+          <text x="260" y="228" text-anchor="middle" style="font:400 10.5px var(--font);fill:#b9c8e6">データはひとつ</text>
+          <text x="260" y="244" text-anchor="middle" style="font:400 10.5px var(--font);fill:#b9c8e6">いつでも最新</text>
+          <g class="wk" style="animation-delay:0s"><circle cx="260" cy="70" r="28"/><use href="#i-card" x="248" y="58" width="24" height="24"/></g>
+          <g class="wk" style="animation-delay:2s"><circle cx="369.5" cy="122.7" r="28"/><use href="#i-doc" x="357.5" y="110.7" width="24" height="24"/></g>
+          <g class="wk" style="animation-delay:4s"><circle cx="396.5" cy="241.2" r="28"/><use href="#i-check" x="384.5" y="229.2" width="24" height="24"/></g>
+          <g class="wk" style="animation-delay:6s"><circle cx="320.7" cy="336.1" r="28"/><use href="#i-helmet" x="308.7" y="324.1" width="24" height="24"/></g>
+          <g class="wk" style="animation-delay:8s"><circle cx="199.3" cy="336.1" r="28"/><use href="#i-bill" x="187.3" y="324.1" width="24" height="24"/></g>
+          <g class="wk" style="animation-delay:10s"><circle cx="123.5" cy="241.2" r="28"/><use href="#i-yen" x="111.5" y="229.2" width="24" height="24"/></g>
+          <g class="wk" style="animation-delay:12s"><circle cx="150.5" cy="122.7" r="28"/><use href="#i-chart" x="138.5" y="110.7" width="24" height="24"/></g>
+          <g style="font:700 12.5px var(--font);fill:#13213d">
+            <text x="260" y="29" text-anchor="middle">営業・現場調査</text>
+            <text x="404" y="87" text-anchor="start">見積</text>
+            <text x="432" y="246" text-anchor="start">受注・発注</text>
+            <text x="320.7" y="385" text-anchor="middle">工程・施工</text>
+            <text x="199.3" y="385" text-anchor="middle">請求・出来高</text>
+            <text x="88" y="246" text-anchor="end">入金</text>
+            <text x="116" y="87" text-anchor="end">原価・利益</text>
+          </g>
+        </svg>
+      </div>
+      <div class="reveal">
+        <div class="eyebrow">HOW</div>
+        <h2 style="font-size:clamp(1.55rem,3vw,2.1rem);font-weight:900;margin-top:10px">工事の流れに合わせたアプリで、<br>仕事をひとつにつなげます。</h2>
+        <p style="color:var(--muted);margin-top:16px">バラバラだったExcelや紙を、ひとつの専用アプリにまとめます。営業・現場調査から見積、受注・発注、工程・施工、請求・出来高、入金、原価・利益まで、工事の流れが一本につながります。</p>
+        <div class="points">
+          <div class="point"><svg class="ico"><use href="#i-puzzle"/></svg>御社の業務に合わせたオーダーメイド開発</div>
+          <div class="point"><svg class="ico"><use href="#i-phone"/></svg>現場ではスマホ、事務所ではパソコン</div>
+          <div class="point"><svg class="ico"><use href="#i-headset"/></svg>導入後も続けてサポート</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal"><div class="eyebrow">STRENGTH</div><h2>IKSの強み</h2></div>
+      <div class="grid4">
+        <div class="card reveal"><div class="num">01</div><h3>工事の流れをふまえてご提案</h3><p>工事の仕事に関わってきた経験から、現場の流れや帳票のことも、ある程度わかったうえでお話を伺えます。</p></div>
+        <div class="card reveal"><div class="num">02</div><h3>販売と工事の両方に対応</h3><p>商品の受注・出荷と、工事の受注・施工・請求。商社・販売店ならではの2つの流れを、ひとつの仕組みで管理できます。</p></div>
+        <div class="card reveal"><div class="num">03</div><h3>まず試作を見ていただく</h3><p>話を聞いてすぐに、実際に触れる試作の画面をつくります。完成形をイメージしてから決められます。</p></div>
+        <div class="card reveal"><div class="num">04</div><h3>小さく始めて育てる</h3><p>一番困っている業務から始めて、使いながら機能を足していけます。自社サービスの運営で培った経験も活かします。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft">
+    <div class="wrap">
+      <div class="sec-head reveal"><div class="eyebrow">FLOW</div><h2>導入までの流れ</h2><p>ヒアリングから導入後のサポートまで、しっかり伴走します。</p></div>
+      <ol class="steps reveal">
+        <li><b>ヒアリング</b><span>今のExcelや帳票を拝見し、困っていることを伺います。</span></li>
+        <li><b>試作・お見積り</b><span>試作の画面をご覧いただきながら、範囲と費用を決めます。</span></li>
+        <li><b>開発・導入</b><span>機能ごとに確かめながら開発し、データの移行まで行います。</span></li>
+        <li><b>運用・継続支援</b><span>操作の説明から改善・保守まで、続けてサポートします。</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="products">
+    <div class="wrap">
+      <div class="sec-head reveal"><div class="eyebrow">OUR PRODUCTS</div><h2>自社サービスのご紹介</h2><p>すぐに使い始められるクラウドサービスもご用意しています。</p></div>
+      <div class="product reveal">
+        <div>
+          <div class="cat">営業・顧客管理システム</div>
+          <h3>エイマネ<small>EIMANE</small></h3>
+          <p>名刺を撮るだけで顧客を登録。展示会の名刺から追客、電話・メールの記録、見積まで1か所で管理します。業種を問わずお使いいただけます。月5,000円から、2週間の無料お試しつき。</p>
+          <span class="soon">特設サイト 準備中</span>
+        </div>
+        <img src="img/pc-home.jpg" alt="エイマネのホーム画面（見本データ）" loading="lazy">
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== 受託アプリ開発 ===================== -->
+<div class="page" data-page="development" hidden>
+  <div class="page-head soft">
+    <div class="wrap">
+      <div class="crumb">トップ ／ 受託アプリ開発</div>
+      <h1>受託アプリ開発</h1>
+      <p>建設会社、専門工事会社、工事も受注する商社・販売店のために。Excel管理のアプリ化から、業務に合わせた専用システムの開発までお任せください。</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">SERVICE</div><h2>2つの開発メニュー</h2></div>
+      <div class="grid2">
+        <div class="card reveal">
+          <div class="icon-box"><svg class="ico"><use href="#i-sheet"/></svg></div>
+          <h3>Excel管理のアプリ化</h3>
+          <p>工事台帳・受注管理表・利益率の計算表など、今お使いのExcelの項目と計算式を読み解き、同じ考え方のままアプリにします。今のデータも取り込めます。</p>
+          <ul class="checks"><li>現場ではスマホ、事務所ではパソコンで同じデータを使える</li><li>何人で同時に入力しても、データはひとつ</li><li>計算は自動で、式が壊れない</li><li>過去のExcelのデータを取り込み</li></ul>
+        </div>
+        <div class="card reveal">
+          <div class="icon-box"><svg class="ico"><use href="#i-puzzle"/></svg></div>
+          <h3>業務に合わせた専用開発</h3>
+          <p>見積・原価、工程、現場調査、施工台帳、請求・入金、商品の受注・出荷など。会社ごとの工事の流れに合わせて、一から設計します。</p>
+          <ul class="checks"><li>社内の言葉・帳票の形に合わせた画面</li><li>必要な機能から小さく始められる</li><li>担当者ごとの権限設定</li><li>写真・ファイルの保存や共有にも対応</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="soft">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">BEFORE / AFTER</div><h2>Excelからアプリにすると、<br>こう変わります</h2><p>工事の受注管理を例にしています。</p></div>
+      <div class="compare reveal">
+        <table>
+          <thead><tr><th>項目</th><th>Excelのとき</th><th class="after">アプリにすると</th></tr></thead>
+          <tbody>
+            <tr><th>工事番号</th><td>別の一覧を見ながら手で付ける。重複に気づかないことも。</td><td class="after">登録すると、決まったルールで自動で付く。</td></tr>
+            <tr><th>経費の計算</th><td>「日数×単価」を毎回入力。手で直した数字が混ざる。</td><td class="after">日数を入れるだけで自動計算。例外は理由を残して修正できる。</td></tr>
+            <tr><th>請求・入金</th><td>入金予定日を自分で計算して、カレンダーにメモ。</td><td class="after">取引先の締め日・支払日から入金予定を自動で出し、残高まで一覧に。</td></tr>
+            <tr><th>共有</th><td>メールでファイルを回すうちに、最新版が分からなくなる。</td><td class="after">全員が同じ画面を見るので、いつでも最新。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">CASE</div><h2>開発事例</h2><p>お客様の名前は伏せて、業種と内容をご紹介します。</p></div>
+      <div class="grid2">
+        <article class="card reveal">
+          <div class="case-top"><span class="who">建材・塗装の会社様</span><span class="badge">開発済み</span></div>
+          <h3>現場ごとの利益率がすぐ分かる管理システム</h3>
+          <div class="from">元：現場利益率・部材金額の連動管理表（Excel）</div>
+          <p>部材の単価と使った量から、現場ごとの原価と利益率を自動で計算。見積から請求・入金までを同じ画面で追えるようにしました。</p>
+        </article>
+        <article class="card reveal">
+          <div class="case-top"><span class="who">設備工事の会社様</span><span class="badge gray">試作・ヒアリング中</span></div>
+          <h3>受注管理と施工台帳</h3>
+          <div class="from">元：年度ごとの受注管理一覧・施工台帳（Excel）</div>
+          <p>工事番号の自動採番、担当者ごとの一覧、経費の自動計算、請求と入金予定の管理。お客様と画面を確認しながら進めています。</p>
+        </article>
+        <article class="card reveal">
+          <div class="case-top"><span class="who">設備の販売・施工の会社様</span><span class="badge">開発済み</span></div>
+          <h3>現場調査アプリ</h3>
+          <div class="from">元：紙の調査票と、担当者ごとのやり方</div>
+          <p>調べる順番・測り方・撮影する場所を画面が案内し、入力漏れも自動でチェック。誰が調査しても同じ形の報告書ができ、写真や動画とURLで共有できます。</p>
+        </article>
+        <article class="card reveal">
+          <div class="case-top"><span class="who">工事会社様向けサービス</span><span class="badge">稼働中</span></div>
+          <h3>現場スケジュール帳</h3>
+          <div class="from">元：ホワイトボードと予定表のExcel</div>
+          <p>現場と作業員の予定を、社内の全員でリアルタイムに共有。誰かが予定を入れると、他の人の画面にもすぐに出ます。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="soft">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">EXAMPLES</div><h2>アプリにできる工事の業務</h2></div>
+      <div class="chips reveal"><span>見積書の作成</span><span>実行予算・原価管理</span><span>現場ごとの利益率</span><span>工程表・現場の予定</span><span>現場調査・報告書</span><span>現場写真の整理と共有</span><span>施工台帳・工事台帳</span><span>職人・協力会社の手配</span><span>部材・商品の発注</span><span>商品の受注・出荷</span><span>出来高請求</span><span>請求・入金管理</span><span>日報</span><span>安全書類</span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== 導入・運用支援 ===================== -->
+<div class="page" data-page="support" hidden>
+  <div class="page-head soft">
+    <div class="wrap">
+      <div class="crumb">トップ ／ 導入・運用支援</div>
+      <h1>導入・運用支援</h1>
+      <p>アプリは、使われてはじめて役に立ちます。使い始めの説明から、使いながらの改善・保守まで続けてお手伝いします。</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap">
+      <div class="grid3">
+        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-book"/></svg></div><div class="eyebrow">SUPPORT</div><h3>操作支援</h3><p>使い始めの不安をなくします。</p><ul class="checks"><li>操作説明会（訪問・オンライン）</li><li>スマホ編・パソコン編の手順書</li><li>使い方の説明動画</li><li>メンバーの招待・初期設定</li></ul></div>
+        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-tool"/></svg></div><div class="eyebrow">IMPROVE</div><h3>改善</h3><p>使いながら出てきた要望を形にします。</p><ul class="checks"><li>画面・項目の追加や変更</li><li>新しい機能の追加</li><li>集計・帳票の追加</li><li>ほかの業務への展開</li></ul></div>
+        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-shield"/></svg></div><div class="eyebrow">MAINTENANCE</div><h3>保守</h3><p>安心して使い続けられるように見守ります。</p><ul class="checks"><li>不具合の調査・修正</li><li>データのバックアップ</li><li>利用者・端末の管理</li><li>お問い合わせ窓口</li></ul></div>
+      </div>
+    </div>
+  </section>
+  <section class="soft">
+    <div class="wrap">
+      <div class="sec-head center"><div class="eyebrow">FAQ</div><h2>よくある質問</h2></div>
+      <div class="faq">
+        <details open><summary>費用はどのくらいかかりますか？</summary><p>作る範囲によって変わるため、ヒアリングのあとにお見積りします。必要な機能から小さく始めることもできます。［開発費・月額保守の目安を入れる］</p></details>
+        <details><summary>今のExcelのデータは移せますか？</summary><p>はい。今お使いの表を読み取って、新しいアプリに取り込みます。年度ごとのシートなども、ご相談のうえで整理します。</p></details>
+        <details><summary>スマホでも使えますか？</summary><p>使えます。現場ではスマホ、事務所ではパソコンと、同じデータを使い分けられます。アプリストアからのインストールは必要ありません。</p></details>
+        <details><summary>パソコンが苦手な社員でも使えますか？</summary><p>社内で使っている言葉や手順に合わせて画面をつくるので、覚えることを少なくできます。手順書と説明動画もご用意します。</p></details>
+        <details><summary>建設業以外でも相談できますか？</summary><p>建設業と、工事も受注する商社・販売店の業務を得意としています。それ以外の業種の方も、まずはお気軽にご相談ください。営業管理アプリ「エイマネ」は業種を問わずお使いいただけます。</p></details>
+        <details><summary>導入後に機能を追加できますか？</summary><p>できます。使いながら出てきた要望に合わせて、画面や機能を追加・変更します。</p></details>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== お問い合わせ ===================== -->
+<div class="page" data-page="contact" hidden>
+  <div class="page-head soft">
+    <div class="wrap">
+      <div class="crumb">トップ ／ お問い合わせ</div>
+      <h1>お問い合わせ</h1>
+      <p>「このExcel、アプリにできる？」という段階からお気軽にご相談ください。ご相談・お見積りは無料です。</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap contact">
+      <form id="contact-form" novalidate>
+        <div class="field">ご相談の種類
+          <div class="radios" role="radiogroup">
+            <label><input type="radio" name="topic" id="t1" checked>相談したい</label>
+            <label><input type="radio" name="topic" id="t2">見積もりを依頼したい</label>
+            <label><input type="radio" name="topic" id="t3">エイマネについて</label>
+          </div>
+        </div>
+        <label class="field" for="f-company"><span>会社名<span class="req">必須</span></span><input id="f-company" autocomplete="organization"></label>
+        <label class="field" for="f-name"><span>お名前<span class="req">必須</span></span><input id="f-name" autocomplete="name"></label>
+        <label class="field" for="f-mail"><span>メールアドレス<span class="req">必須</span></span><input id="f-mail" type="email" autocomplete="email"></label>
+        <label class="field" for="f-tel">電話番号<input id="f-tel" type="tel" autocomplete="tel"></label>
+        <label class="field" for="f-body">ご相談内容<textarea id="f-body" placeholder="例：工程表のExcelを3人で回していて、最新版が分からなくなる"></textarea></label>
+        <div><button class="btn btn-main" type="submit"><svg><use href="#i-mail"/></svg>送信する</button></div>
+        <div class="form-msg" id="form-msg" hidden>確認用のページなので、送信はされません。公開するときに実際に届くように設定します。</div>
+      </form>
+      <aside class="card">
+        <h3>会社概要</h3>
+        <table class="profile">
+          <tr><th>名称</th><td>IKS <span class="ph">［正式名称］</span></td></tr>
+          <tr><th>代表者</th><td class="ph">［代表者名］</td></tr>
+          <tr><th>所在地</th><td class="ph">［所在地］</td></tr>
+          <tr><th>電話</th><td class="ph">［電話番号］</td></tr>
+          <tr><th>メール</th><td class="ph">［メールアドレス］</td></tr>
+          <tr><th>事業内容</th><td>建設業・工事を受注する商社/販売店向けの業務アプリ開発<br>導入・運用支援<br>営業管理アプリ「エイマネ」の提供</td></tr>
+        </table>
+      </aside>
+    </div>
+  </section>
+</div>
+</main>
+
+<div class="cta" id="cta">
+  <div class="wrap">
+    <div class="cta-box">
+      <div><h2>御社の工事の業務に合わせて、<br>最適な仕組みをご提案します。</h2><p>ご相談・お見積りは無料です。今お使いのExcelや帳票をお持ちください。</p></div>
+      <a class="btn btn-main" href="#contact"><svg><use href="#i-mail"/></svg>お問い合わせ・無料相談</a>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <a class="brand" href="#top"><svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="7" fill="#fff"/><path d="M9 11h6M9 17h6M9 23h6" stroke="#13213d" stroke-width="2.4" stroke-linecap="round"/><path d="M19 23l6-12" stroke="#1f5fd1" stroke-width="2.6" stroke-linecap="round"/><circle cx="25" cy="23" r="2" fill="#1f5fd1"/></svg><b>IKS</b><small>工事の業務改善を、<br>アプリで。</small></a>
+      <nav aria-label="フッター"><a href="#top">トップ</a><a href="#development">受託アプリ開発</a><a href="#support">導入・運用支援</a><a href="#contact">お問い合わせ</a></nav>
+    </div>
+    <div class="copy">© 2026 IKS　／　エイマネ（EIMANE）はIKSのサービスです</div>
+  </div>
+</footer>
+
 <script>
 (function () {
-  var hero = document.querySelector('.visual-hero');
-  var button = document.querySelector('.motion-toggle');
+  document.documentElement.classList.add('js');
+  var motionToggle = document.querySelector('.motion-toggle');
+  motionToggle.addEventListener('click', function () {
+    var paused = document.querySelector('.visual-hero').classList.toggle('paused');
+    motionToggle.setAttribute('aria-pressed', String(paused));
+    motionToggle.setAttribute('aria-label', paused ? '表紙のアニメーションを再開' : '表紙のアニメーションを一時停止');
+    motionToggle.querySelector('path').setAttribute('d', paused ? 'M5 3l8 5-8 5z' : 'M5 3v10M11 3v10');
+  });
+  var pages = document.querySelectorAll('.page');
+  var navLinks = document.querySelectorAll('[data-nav]');
+  var nav = document.getElementById('nav');
+  var menuBtn = document.getElementById('menu-btn');
+  var cta = document.getElementById('cta');
+  var pageNames = ['top', 'development', 'support', 'contact'];
 
-  if (!hero || !button) return;
+  // お困りごとの再生（10秒ごとに次へ）
+  var scenes = document.querySelectorAll('.scene');
+  var tabs = document.querySelectorAll('.tab');
+  var cur = 0, timer = null;
+  function play(n) {
+    cur = n;
+    scenes.forEach(function (s, k) { s.hidden = k !== n; s.classList.remove('play'); });
+    tabs.forEach(function (t, k) {
+      t.setAttribute('aria-selected', k === n ? 'true' : 'false');
+      var bar = t.querySelector('.bar'); bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = '';
+    });
+    void scenes[n].offsetWidth;
+    scenes[n].classList.add('play');
+    clearTimeout(timer);
+    timer = setTimeout(function () { play((cur + 1) % scenes.length); }, 10000);
+  }
+  tabs.forEach(function (t, k) { t.addEventListener('click', function () { play(k); }); });
 
-  button.addEventListener('click', function () {
-    var paused = hero.classList.toggle('paused');
+  function show() {
+    var hash = location.hash.replace('#', '') || 'top';
+    var name = pageNames.indexOf(hash) >= 0 ? hash : 'top';
+    pages.forEach(function (p) { p.hidden = p.dataset.page !== name; });
+    navLinks.forEach(function (a) {
+      if (a.dataset.nav === name && a.getAttribute('href') === '#' + name) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+    cta.hidden = name === 'contact';
+    nav.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    if (name === 'top') play(cur); else clearTimeout(timer);
+    if (pageNames.indexOf(hash) >= 0 || !location.hash) window.scrollTo(0, 0);
+    else { var el = document.getElementById(hash); if (el) el.scrollIntoView(); }
+  }
+  window.addEventListener('hashchange', show);
+  show();
 
-    button.setAttribute('aria-pressed', String(paused));
-    button.setAttribute(
-      'aria-label',
-      paused
-        ? '表紙のアニメーションを再開'
-        : '表紙のアニメーションを一時停止'
-    );
+  var targets = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  } else {
+    targets.forEach(function (el) { el.classList.add('in'); });
+  }
 
-    button.querySelector('path').setAttribute(
-      'd',
-      paused
-        ? 'M5 3l8 5-8 5z'
-        : 'M5 3v10M11 3v10'
-    );
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.getElementById('contact-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    document.getElementById('form-msg').hidden = false;
   });
 })();
 </script>
+
+</body>
+</html>

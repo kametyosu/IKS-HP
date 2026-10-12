@@ -332,6 +332,22 @@ body{margin:0}
 @media(max-width:600px){.visual-hero{padding:64px 0 72px}.visual-hero .wrap{padding-inline:8px}.visual-hero svg{min-height:250px}}
 @media(prefers-reduced-motion:reduce){.paper-chaos,.old-system{opacity:.45}.new-system,.complete{opacity:1;transform:none}.transfer{opacity:1}.orbit-dot,.motion-toggle{display:none}}
 
+
+/* Top: animation on the left, explanation on the right. */
+.visual-hero{padding:64px 0 72px;background:radial-gradient(ellipse at 25% 45%,#e9f2ff,transparent 65%),#fafbfd}
+.visual-hero .hero-layout{max-width:1240px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center}
+.hero-animation{position:relative;min-width:0;background:rgba(255,255,255,.7);border:1px solid #e5edf7;border-radius:24px;padding:22px 0 50px}
+.visual-hero .hero-title{font-size:clamp(1.65rem,2.65vw,2.55rem);line-height:1.55;margin-top:20px;letter-spacing:.01em}
+.visual-hero .lead{font-size:.96rem;margin-top:20px;line-height:2;color:var(--muted)}
+.hero-scope{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.hero-scope span{font-size:.76rem;background:#edf3fc;color:#345889;padding:4px 10px;border-radius:4px}
+.visual-hero .ctas{gap:10px;margin-top:26px}
+.visual-hero .btn{font-size:.85rem;padding:13px 16px}
+.visual-hero .hero-copy .btn svg{width:18px;height:18px}
+.product-summary{margin-top:28px;scroll-margin-top:100px}
+#problems,#examples,#capabilities{scroll-margin-top:90px}
+@media(max-width:900px){.visual-hero .hero-layout{grid-template-columns:1fr;gap:32px;max-width:700px}.visual-hero{padding:40px 0 48px}.hero-copy{grid-row:1}.hero-animation{grid-row:2}.visual-hero .hero-title{font-size:clamp(1.7rem,5vw,2.55rem)}}
+@media(max-width:600px){.visual-hero .wrap{padding-inline:20px}.visual-hero .hero-tag{font-size:.72rem;white-space:normal}.visual-hero .hero-animation>svg{min-height:0}.hero-animation{padding:24px 0 48px}.visual-hero .hero-title{font-size:clamp(1.4rem,6vw,2rem)}.head .wrap{gap:12px}.brand small{font-size:.65rem}}
 </style>
 </head>
 <body>
@@ -366,7 +382,7 @@ body{margin:0}
   <div class="wrap">
     <a class="brand" href="#top">
       <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="7" fill="#13213d"/><path d="M9 11h6M9 17h6M9 23h6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M19 23l6-12" stroke="#5b8ff0" stroke-width="2.6" stroke-linecap="round"/><circle cx="25" cy="23" r="2" fill="#5b8ff0"/></svg>
-      <b>IKS</b><small>工事の業務改善を、<br>アプリで。</small>
+      <b>IKS</b><small>建設業の業務改善を、<br>アプリで。</small>
     </a>
     <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">メニュー</button>
     <nav class="nav" id="nav" aria-label="メインメニュー">
@@ -384,8 +400,8 @@ body{margin:0}
 <!-- ===================== トップ ===================== -->
 <div class="page" data-page="top">
 <section class="visual-hero" aria-labelledby="hero-heading">
-<h1 id="hero-heading" class="sr-only">紙とExcelの煩雑な管理を、ひとつの業務アプリへ。</h1>
-<div class="wrap"><svg viewBox="0 0 1200 540" role="img" aria-labelledby="hero-svg-title hero-svg-desc">
+
+<div class="wrap hero-layout"><div class="hero-animation"><svg viewBox="0 0 1200 540" role="img" aria-labelledby="hero-svg-title hero-svg-desc">
 <title id="hero-svg-title">紙と表計算の業務がアプリで整理されるアニメーション</title>
 <desc id="hero-svg-desc">散らばった書類、表計算、重複作業がひとつのアプリに集まり、整理された情報をパソコンとスマートフォンで共有します。</desc>
 <defs><filter id="hero-shadow" x="-30%" y="-30%" width="170%" height="180%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#163158" flood-opacity=".10"/></filter></defs>
@@ -410,17 +426,17 @@ body{margin:0}
 <path d="M1019 355h65m-65 17h65m-65 17h45" stroke="#d2deee" stroke-width="6" stroke-linecap="round"/>
 <g class="complete"><circle cx="1052" cy="415" r="12" fill="#dbf3e9"/><path d="M1046 415l4 4 8-9" fill="none" stroke="#298365" stroke-width="3"/></g></g>
 <g class="complete"><circle cx="978" cy="97" r="27" fill="#287f63"/><path d="M966 97l8 8 16-18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
-</svg></div><button class="motion-toggle" type="button" aria-label="表紙のアニメーションを一時停止" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="2"/></svg></button></section>
-  <div class="ticker" aria-label="アプリにできる工事の業務">
-    <div class="ticker-track">
-      <span>見積書の作成</span><span>原価・利益率管理</span><span>工程管理</span><span>現場調査・報告書</span><span>現場写真の整理</span><span>施工台帳・工事台帳</span><span>職人・協力会社の手配</span><span>部材の発注</span><span>商品の受注・出荷</span><span>出来高請求</span><span>請求・入金管理</span><span>日報</span><span>安全書類</span>
-      <span aria-hidden="true">見積書の作成</span><span aria-hidden="true">原価・利益率管理</span><span aria-hidden="true">工程管理</span><span aria-hidden="true">現場調査・報告書</span><span aria-hidden="true">現場写真の整理</span><span aria-hidden="true">施工台帳・工事台帳</span><span aria-hidden="true">職人・協力会社の手配</span><span aria-hidden="true">部材の発注</span><span aria-hidden="true">商品の受注・出荷</span><span aria-hidden="true">出来高請求</span><span aria-hidden="true">請求・入金管理</span><span aria-hidden="true">日報</span><span aria-hidden="true">安全書類</span>
-    </div>
-  </div>
-
+</svg><button class="motion-toggle" type="button" aria-label="表紙のアニメーションを一時停止" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="2"/></svg></button></div>
+<div class="hero-copy">
+  <span class="hero-tag">建設業向け 業務アプリ開発</span>
+  <h1 id="hero-heading" class="hero-title">紙とExcelで回している<br>建設業の仕事を、<br><em>御社に合うアプリへ。</em></h1>
+  <p class="lead">紙の帳票やExcelで管理している業務を、御社の仕事の流れに合わせたアプリに。情報の整理・共有や転記の手間など、今のお困りごとから改善方法をご相談いただけます。</p>
+  <div class="hero-scope"><span>見積・原価</span><span>工程管理</span><span>現場写真</span><span>施工台帳</span><span>請求・入金</span></div>
+  <div class="ctas"><a class="btn btn-main" href="#contact">無料で相談する<svg><use href="#i-arrow"/></svg></a><a class="btn btn-sub" href="#problems">改善のイメージを見る</a></div>
+</div></div></section>
   <section class="soft" id="problems">
     <div class="wrap">
-      <div class="sec-head reveal"><div class="eyebrow">PROBLEM</div><h2>建設業でよくある、<br>こんなお困りごと</h2><p>工事の仕事で毎日のように起きていることを、アニメーションでご紹介します。アプリにするとどう変わるかも、あわせてご覧ください。</p></div>
+      <div class="sec-head reveal"><div class="eyebrow">PROBLEM</div><h2>散らばった情報が、<br>ひとつにつながる。</h2><p>紙・Excelでの管理からアプリに変えると、仕事はどう変わるのか。課題と改善のイメージをアニメーションでご覧ください。以下は改善方法の説明で、個別の導入成果を保証するものではありません。</p></div>
       <div class="player">
         <div class="tabs" role="tablist" aria-label="お困りごと">
           <button class="tab" role="tab" aria-selected="true"><span class="n">01</span>Excel管理が限界<i class="bar"></i></button>
@@ -617,112 +633,48 @@ body{margin:0}
     </div>
   </section>
 
-  <section class="big">
+  <section id="examples">
     <div class="wrap">
-      <div class="eyebrow reveal">SOLUTION</div>
-      <h2 class="reveal"><span>そのお悩み、</span><span><em>アプリ</em>でまとめて</span><span>解決できます。</span></h2>
-      <div class="swaps reveal">
-        <div class="swap" style="--d:0s"><s>どれが最新？</s><b>いつでも最新</b></div>
-        <div class="swap" style="--d:.4s"><s>現場と事務所でずれる</s><b>全員が同じ情報</b></div>
-        <div class="swap" style="--d:.8s"><s>何度も書き写し</s><b>入力は一度だけ</b></div>
-        <div class="swap" style="--d:1.2s"><s>利益は完了後に判明</s><b>工事中に見える</b></div>
-      </div>
-      <div class="ctas reveal"><a class="btn btn-white" href="#contact">今の業務を相談してみる<svg><use href="#i-arrow"/></svg></a></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="sec-head reveal"><div class="eyebrow">FOR</div><h2>こんな会社さまの業務を<br>アプリにします</h2></div>
-      <div class="grid3">
-        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-helmet"/></svg></div><h3>建設会社・工務店</h3><p>見積・実行予算・工程・現場写真・出来高・請求入金。現場ごとの利益まで、ひとつの流れで管理します。</p></div>
-        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-tool"/></svg></div><h3>設備・電気・専門工事会社</h3><p>現場調査から見積、職人さんや協力会社の手配、施工台帳、請求まで。元請けごとの締め日・支払日にも合わせます。</p></div>
-        <div class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-box"/></svg></div><h3>工事も受注する商社・販売店</h3><p>商品の販売と工事の受注を、別々の表で管理していませんか。物販と工事の見積・受注・請求をひとつにまとめます。</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="soft">
-    <div class="wrap solution">
-      <div class="ringfig reveal">
-        <svg viewBox="0 0 520 420" role="img" aria-label="営業・現場調査から原価・利益までの工事の仕事が、ひとつの専用アプリでつながって回る図">
-          <circle cx="260" cy="210" r="140" fill="none" stroke="#e3ebf8" stroke-width="10"/>
-          <circle class="ring-run" transform="rotate(-90 260 210)" cx="260" cy="210" r="140" fill="none" stroke="#1f5fd1" stroke-width="3" stroke-linecap="round" pathLength="100"/>
-          <circle r="7" fill="#1f5fd1"><animateMotion dur="14s" repeatCount="indefinite" path="M260 70A140 140 0 1 1 259.99 70"/></circle>
-          <circle cx="260" cy="210" r="74" fill="#13213d"/>
-          <use href="#i-app" x="246" y="156" width="28" height="28" style="stroke:#8fb2f2;fill:none;stroke-width:1.6"/>
-          <text x="260" y="208" text-anchor="middle" style="font:700 15px var(--font);fill:#fff">御社専用アプリ</text>
-          <text x="260" y="228" text-anchor="middle" style="font:400 10.5px var(--font);fill:#b9c8e6">データはひとつ</text>
-          <text x="260" y="244" text-anchor="middle" style="font:400 10.5px var(--font);fill:#b9c8e6">いつでも最新</text>
-          <g class="wk" style="animation-delay:0s"><circle cx="260" cy="70" r="28"/><use href="#i-card" x="248" y="58" width="24" height="24"/></g>
-          <g class="wk" style="animation-delay:2s"><circle cx="369.5" cy="122.7" r="28"/><use href="#i-doc" x="357.5" y="110.7" width="24" height="24"/></g>
-          <g class="wk" style="animation-delay:4s"><circle cx="396.5" cy="241.2" r="28"/><use href="#i-check" x="384.5" y="229.2" width="24" height="24"/></g>
-          <g class="wk" style="animation-delay:6s"><circle cx="320.7" cy="336.1" r="28"/><use href="#i-helmet" x="308.7" y="324.1" width="24" height="24"/></g>
-          <g class="wk" style="animation-delay:8s"><circle cx="199.3" cy="336.1" r="28"/><use href="#i-bill" x="187.3" y="324.1" width="24" height="24"/></g>
-          <g class="wk" style="animation-delay:10s"><circle cx="123.5" cy="241.2" r="28"/><use href="#i-yen" x="111.5" y="229.2" width="24" height="24"/></g>
-          <g class="wk" style="animation-delay:12s"><circle cx="150.5" cy="122.7" r="28"/><use href="#i-chart" x="138.5" y="110.7" width="24" height="24"/></g>
-          <g style="font:700 12.5px var(--font);fill:#13213d">
-            <text x="260" y="29" text-anchor="middle">営業・現場調査</text>
-            <text x="404" y="87" text-anchor="start">見積</text>
-            <text x="432" y="246" text-anchor="start">受注・発注</text>
-            <text x="320.7" y="385" text-anchor="middle">工程・施工</text>
-            <text x="199.3" y="385" text-anchor="middle">請求・出来高</text>
-            <text x="88" y="246" text-anchor="end">入金</text>
-            <text x="116" y="87" text-anchor="end">原価・利益</text>
-          </g>
-        </svg>
-      </div>
-      <div class="reveal">
-        <div class="eyebrow">HOW</div>
-        <h2 style="font-size:clamp(1.55rem,3vw,2.1rem);font-weight:900;margin-top:10px">工事の流れに合わせたアプリで、<br>仕事をひとつにつなげます。</h2>
-        <p style="color:var(--muted);margin-top:16px">バラバラだったExcelや紙を、ひとつの専用アプリにまとめます。営業・現場調査から見積、受注・発注、工程・施工、請求・出来高、入金、原価・利益まで、工事の流れが一本につながります。</p>
-        <div class="points">
-          <div class="point"><svg class="ico"><use href="#i-puzzle"/></svg>御社の業務に合わせたオーダーメイド開発</div>
-          <div class="point"><svg class="ico"><use href="#i-phone"/></svg>現場ではスマホ、事務所ではパソコン</div>
-          <div class="point"><svg class="ico"><use href="#i-headset"/></svg>導入後も続けてサポート</div>
-        </div>
+      <div class="sec-head"><div class="eyebrow">CASE</div><h2>実際の業務は、どう変わった？</h2><p>紙やExcelでの管理を、どのような機能に置き換えるか。開発済みの内容と、試作・ヒアリング中の内容をご紹介します。</p></div>
+      <div class="grid2">
+        <article class="card reveal">
+          <div class="case-top"><span class="who">建材・塗装の会社様</span><span class="badge">開発済み</span></div>
+          <h3>現場ごとの利益率がすぐ分かる管理システム</h3>
+          <div class="from">元：現場利益率・部材金額の連動管理表（Excel）</div>
+          <p>部材の単価と使った量から、現場ごとの原価と利益率を自動で計算。見積から請求・入金までを同じ画面で追えるようにしました。</p>
+        </article>
+        <article class="card reveal">
+          <div class="case-top"><span class="who">設備工事の会社様</span><span class="badge gray">試作・ヒアリング中</span></div>
+          <h3>受注管理と施工台帳</h3>
+          <div class="from">元：年度ごとの受注管理一覧・施工台帳（Excel）</div>
+          <p>工事番号の自動採番、担当者ごとの一覧、経費の自動計算、請求と入金予定の管理。お客様と画面を確認しながら進めています。</p>
+        </article>
+        <article class="card reveal">
+          <div class="case-top"><span class="who">設備の販売・施工の会社様</span><span class="badge">開発済み</span></div>
+          <h3>現場調査アプリ</h3>
+          <div class="from">元：紙の調査票と、担当者ごとのやり方</div>
+          <p>調べる順番・測り方・撮影する場所を画面が案内し、入力漏れも自動でチェック。誰が調査しても同じ形の報告書ができ、写真や動画とURLで共有できます。</p>
+        </article>
+        <article class="card reveal">
+          <div class="case-top"><span class="who">工事会社様向けサービス</span><span class="badge">稼働中</span></div>
+          <h3>現場スケジュール帳</h3>
+          <div class="from">元：ホワイトボードと予定表のExcel</div>
+          <p>現場と作業員の予定を、社内の全員でリアルタイムに共有。誰かが予定を入れると、他の人の画面にもすぐに出ます。</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="sec-head reveal"><div class="eyebrow">STRENGTH</div><h2>IKSの強み</h2></div>
-      <div class="grid4">
-        <div class="card reveal"><div class="num">01</div><h3>工事の流れをふまえてご提案</h3><p>工事の仕事に関わってきた経験から、現場の流れや帳票のことも、ある程度わかったうえでお話を伺えます。</p></div>
-        <div class="card reveal"><div class="num">02</div><h3>販売と工事の両方に対応</h3><p>商品の受注・出荷と、工事の受注・施工・請求。商社・販売店ならではの2つの流れを、ひとつの仕組みで管理できます。</p></div>
-        <div class="card reveal"><div class="num">03</div><h3>まず試作を見ていただく</h3><p>話を聞いてすぐに、実際に触れる試作の画面をつくります。完成形をイメージしてから決められます。</p></div>
-        <div class="card reveal"><div class="num">04</div><h3>小さく始めて育てる</h3><p>一番困っている業務から始めて、使いながら機能を足していけます。自社サービスの運営で培った経験も活かします。</p></div>
-      </div>
-    </div>
-  </section>
+<section class="soft" id="capabilities"><div class="wrap">
+  <div class="sec-head reveal"><div class="eyebrow">SERVICE</div><h2>御社の業務に合わせて、できること。</h2><p>今の管理方法と必要な機能を整理し、アプリの開発から導入・運用支援までご相談いただけます。</p></div>
+  <div class="grid3">
+    <article class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-sheet"/></svg></div><h3>紙・Excelの管理をアプリへ</h3><p>見積、原価、工程、施工台帳、請求・入金など。今お使いの帳票をもとに、管理したい情報や作業を整理します。</p><a href="#development">受託アプリ開発を見る →</a></article>
+    <article class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-phone"/></svg></div><h3>現場と事務所の情報共有</h3><p>現場のスマホと事務所のパソコンで、予定や写真、報告内容を共有する仕組み。仕事の流れに合わせた画面や機能を検討します。</p><a href="#development">開発内容を見る →</a></article>
+    <article class="card reveal"><div class="icon-box"><svg class="ico"><use href="#i-headset"/></svg></div><h3>導入後の操作・運用支援</h3><p>操作説明や手順書、画面・項目の改善、保守など。導入後に必要な支援の範囲もご相談いただけます。</p><a href="#support">導入・運用支援を見る →</a></article>
+  </div>
+  <div class="card product-summary reveal" id="products"><div class="eyebrow">OUR PRODUCT</div><h3>営業管理アプリ「エイマネ」</h3><p>顧客情報や電話・メールの記録、見積などをまとめて管理する自社サービスです。機能や利用条件についてはお問い合わせください。</p><a href="#contact">エイマネについて問い合わせる →</a></div>
+</div></section>
 
-  <section class="soft">
-    <div class="wrap">
-      <div class="sec-head reveal"><div class="eyebrow">FLOW</div><h2>導入までの流れ</h2><p>ヒアリングから導入後のサポートまで、しっかり伴走します。</p></div>
-      <ol class="steps reveal">
-        <li><b>ヒアリング</b><span>今のExcelや帳票を拝見し、困っていることを伺います。</span></li>
-        <li><b>試作・お見積り</b><span>試作の画面をご覧いただきながら、範囲と費用を決めます。</span></li>
-        <li><b>開発・導入</b><span>機能ごとに確かめながら開発し、データの移行まで行います。</span></li>
-        <li><b>運用・継続支援</b><span>操作の説明から改善・保守まで、続けてサポートします。</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="products">
-    <div class="wrap">
-      <div class="sec-head reveal"><div class="eyebrow">OUR PRODUCTS</div><h2>自社サービスのご紹介</h2><p>すぐに使い始められるクラウドサービスもご用意しています。</p></div>
-      <div class="product reveal">
-        <div>
-          <div class="cat">営業・顧客管理システム</div>
-          <h3>エイマネ<small>EIMANE</small></h3>
-          <p>名刺を撮るだけで顧客を登録。展示会の名刺から追客、電話・メールの記録、見積まで1か所で管理します。業種を問わずお使いいただけます。月5,000円から、2週間の無料お試しつき。</p>
-          <span class="soon">特設サイト 準備中</span>
-        </div>
-        <img src="img/pc-home.jpg" alt="エイマネのホーム画面（見本データ）" loading="lazy">
-      </div>
-    </div>
-  </section>
 </div>
 
 <!-- ===================== 受託アプリ開発 ===================== -->
@@ -887,7 +839,7 @@ body{margin:0}
 <div class="cta" id="cta">
   <div class="wrap">
     <div class="cta-box">
-      <div><h2>御社の工事の業務に合わせて、<br>最適な仕組みをご提案します。</h2><p>ご相談・お見積りは無料です。今お使いのExcelや帳票をお持ちください。</p></div>
+      <div><h2>今の業務のお困りごとを、<br>無料でご相談ください。</h2><p>作るものが決まっていなくても大丈夫です。今お使いのExcelや帳票についてお聞かせください。</p></div>
       <a class="btn btn-main" href="#contact"><svg><use href="#i-mail"/></svg>お問い合わせ・無料相談</a>
     </div>
   </div>
@@ -896,7 +848,7 @@ body{margin:0}
 <footer class="foot">
   <div class="wrap">
     <div class="foot-top">
-      <a class="brand" href="#top"><svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="7" fill="#fff"/><path d="M9 11h6M9 17h6M9 23h6" stroke="#13213d" stroke-width="2.4" stroke-linecap="round"/><path d="M19 23l6-12" stroke="#1f5fd1" stroke-width="2.6" stroke-linecap="round"/><circle cx="25" cy="23" r="2" fill="#1f5fd1"/></svg><b>IKS</b><small>工事の業務改善を、<br>アプリで。</small></a>
+      <a class="brand" href="#top"><svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="7" fill="#fff"/><path d="M9 11h6M9 17h6M9 23h6" stroke="#13213d" stroke-width="2.4" stroke-linecap="round"/><path d="M19 23l6-12" stroke="#1f5fd1" stroke-width="2.6" stroke-linecap="round"/><circle cx="25" cy="23" r="2" fill="#1f5fd1"/></svg><b>IKS</b><small>建設業の業務改善を、<br>アプリで。</small></a>
       <nav aria-label="フッター"><a href="#top">トップ</a><a href="#development">受託アプリ開発</a><a href="#support">導入・運用支援</a><a href="#contact">お問い合わせ</a></nav>
     </div>
     <div class="copy">© 2026 IKS　／　エイマネ（EIMANE）はIKSのサービスです</div>

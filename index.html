@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="建設業・商社・販売店の紙とExcelによる業務を、専用アプリで効率化。IKSの受託開発・導入運用支援。">
-<title>IKS | 工事の業務改善を、アプリで。</title>
+<meta name="description" content="建設現場の距離を、ビジネスの限界にしない。現場調査・安全書類・施工情報のDX化と地域の施工ネットワーク構築を目指すIKS。">
+<title>IKS | 現場の距離を、ビジネスの限界にしない。</title>
 <script>document.documentElement.lang = "ja";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -357,6 +357,9 @@ body{margin:0}
 .visual-hero .hero-title{font-size:clamp(2rem,3.1vw,3rem);line-height:1.5}
 @media(max-width:900px){.hero-animation{grid-row:1}.hero-copy{grid-row:2}.visual-hero .hero-copy{padding:24px 20px}.visual-hero .hero-title{font-size:clamp(1.75rem,6.3vw,2.5rem)}}
 @media(prefers-reduced-motion:reduce){.construction-backdrop .crane-hook{animation:none!important}}
+
+/* 施工ネットワーク構想：既存スタイルと機能を保持した追加セクション */
+.dx-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:30px 0}.dx-stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px}.dx-stat strong{display:block;font-family:var(--font-en);font-size:clamp(1.7rem,3vw,2.5rem);color:var(--ink);line-height:1.35}.dx-stat span{font-size:.82rem;color:var(--muted)}.dx-stat small{display:block;color:var(--muted);font-size:.75rem}.dx-figure{background:white;border:1px solid var(--line);border-radius:12px;padding:28px;margin-top:22px}.dx-bars{display:grid;gap:15px}.dx-bar{display:grid;grid-template-columns:85px 1fr 95px;align-items:center;gap:12px;font-size:.88rem}.dx-track{height:18px;background:#e9eef6;border-radius:99px;overflow:hidden}.dx-fill{height:100%;background:var(--accent);border-radius:99px}.dx-fill.old{background:#9baac2}.dx-note{font-size:.78rem;color:var(--muted);margin-top:16px}.dx-cost{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}.dx-cost>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px}.dx-cost strong{display:block;font-family:var(--font-en);font-size:clamp(1.6rem,3vw,2.3rem);color:var(--accent)}.dx-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:28px}.dx-step{border:1px solid var(--line);border-radius:10px;padding:20px 12px;text-align:center;background:white}.dx-step b{display:block;color:var(--accent);font-size:.76rem}.dx-step strong{display:block;margin:6px 0;color:var(--ink)}.dx-step p{font-size:.77rem;color:var(--muted);line-height:1.6}.dx-intro{max-width:760px;color:var(--muted)}@media(max-width:760px){.dx-stat-grid,.dx-cost{grid-template-columns:1fr}.dx-flow{grid-template-columns:1fr 1fr}.dx-bar{grid-template-columns:65px 1fr 70px;font-size:.78rem}}@media(max-width:430px){.dx-flow{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -396,7 +399,7 @@ body{margin:0}
     <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">メニュー</button>
     <nav class="nav" id="nav" aria-label="メインメニュー">
       <a href="#top" data-nav="top">トップ</a>
-      <a href="#development" data-nav="development">受託アプリ開発</a>
+      <a href="#dx-network" data-nav="top">施工ネットワーク</a><a href="#development" data-nav="development">アプリ開発</a>
       <a href="#support" data-nav="support">導入・運用支援</a>
       <a href="#products" data-nav="top">自社サービス</a>
       <a href="#contact" data-nav="contact">お問い合わせ</a>
@@ -437,12 +440,21 @@ body{margin:0}
 <g class="complete"><circle cx="978" cy="97" r="27" fill="#287f63"/><path d="M966 97l8 8 16-18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
 </svg><button class="motion-toggle" type="button" aria-label="表紙のアニメーションを一時停止" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="2"/></svg></button></div>
 <div class="hero-copy"><svg class="construction-backdrop" viewBox="0 0 700 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M70 540V245h195v295M70 300h195M70 355h195M70 410h195M70 465h195M120 245v295M170 245v295M220 245v295M350 540V170h240v370M350 240h240M350 310h240M350 380h240M350 450h240M410 170v370M470 170v370M530 170v370M285 540V78M265 540V78M185 95h420M185 78h420M185 78l100-48 320 48M265 120h20M265 155h20M265 190h20M265 225h20M265 260h20M265 295h20M265 330h20M265 365h20M265 400h20M265 435h20M265 470h20M265 505h20M40 540h600"/><g class="crane-hook"><path d="M580 95v115m-10 0h20m-10 0v16q0 12 12 10"/><rect x="550" y="243" width="60" height="22" rx="2"/></g></g></svg><div class="hero-copy-content">
-  <span class="hero-tag">建設業向け 業務アプリ開発</span>
-  <h1 id="hero-heading" class="hero-title">建築業の業務改善を、<br><em>アプリで。</em></h1>
-  <p class="lead">情報共有、予定の管理、書類作成など、御社の仕事の流れに合わせてアプリをつくります。今の業務で困っていることから、改善方法をご相談いただけます。</p>
-  <div class="hero-scope"><span>見積・原価</span><span>工程管理</span><span>現場写真</span><span>施工台帳</span><span>請求・入金</span></div>
+  <span class="hero-tag">建設現場DX × 施工ネットワーク</span>
+  <h1 id="hero-heading" class="hero-title">現場の距離を、<br><em>ビジネスの限界にしない。</em></h1>
+  <p class="lead">現場調査・安全書類・施工情報をデジタルでつなぐ。地域の協力会社と共通の仕組みをつくり、人が移動しなくても仕事が進む未来を目指します。</p>
+  <div class="hero-scope"><span>現場調査</span><span>安全書類</span><span>遠隔確認</span><span>施工連携</span><span>品質管理</span></div>
   <div class="ctas"><a class="btn btn-main" href="#contact">無料で相談する<svg><use href="#i-arrow"/></svg></a><a class="btn btn-sub" href="#problems">改善のイメージを見る</a></div>
 </div></div></div></section>
+
+<section class="soft" id="dx-vision" aria-labelledby="dx-vision-title">
+ <div class="wrap"><div class="sec-head reveal"><div class="eyebrow">WHY NOW</div><h2 id="dx-vision-title">人が減る時代に、<br>現場の生産性を高める。</h2><p>現場に行かなければ情報を確認できない。遠方の案件は調査や施工の手配が難しい。その当たり前を、デジタルと地域のつながりで変えていきます。</p></div>
+ <div class="dx-stat-grid"><div class="dx-stat"><span>建設業就業者数・1997年</span><strong>685万人</strong><small>比較の起点</small></div><div class="dx-stat"><span>建設業就業者数・2024年</span><strong>477万人</strong><small>約27年間で208万人減</small></div><div class="dx-stat"><span>1997年比の減少率</span><strong>約30%</strong><small>人材をより有効に活用する必要性</small></div></div>
+ <div class="dx-figure" role="img" aria-label="建設業就業者数は1997年685万人、2024年477万人"><h3>建設業就業者数の変化</h3><div class="dx-bars"><div class="dx-bar"><b>1997年</b><div class="dx-track"><div class="dx-fill old" style="width:100%"></div></div><b>685万人</b></div><div class="dx-bar"><b>2024年</b><div class="dx-track"><div class="dx-fill" style="width:69.6%"></div></div><b>477万人</b></div></div><p class="dx-note">出典：総務省「労働力調査」を基にした国土交通省の建設業就業者関連資料。数値は概数です。</p></div>
+ </div>
+</section>
+<section id="dx-cost" aria-labelledby="dx-cost-title"><div class="wrap"><div class="sec-head reveal"><div class="eyebrow">HIDDEN COST</div><h2 id="dx-cost-title">遠方への現場調査。<br>移動にいくら使っていますか？</h2><p>たとえば大阪から福岡へ担当者1名が日帰りで出張する場合。現地で判断できる人材がいないと、交通費だけでなく移動時間も発生します。</p></div><div class="dx-cost"><div><span>新幹線往復</span><strong>30,000円</strong></div><div><span>現地交通費</span><strong>5,000円</strong></div><div><span>担当者の人件費相当</span><strong>30,000円</strong></div></div><div class="dx-figure"><h3>出張1回あたり <strong style="color:var(--accent)">約65,000円</strong></h3><p>月10回なら約65万円、年間120回なら約780万円相当。さらに遠方対応が難しいことで、営業機会を逃す可能性もあります。</p><p class="dx-note">※金額は説明用の仮定であり実績値ではありません。人件費相当は追加の現金支出を意味しません。すべての出張が不要になるわけではありません。</p></div></div></section>
+<section class="soft" id="dx-network" aria-labelledby="dx-network-title"><div class="wrap"><div class="sec-head reveal"><div class="eyebrow">OUR VISION</div><h2 id="dx-network-title">紹介だけで終わらない。<br>本当の施工ネットワークへ。</h2><p>現地の協力会社が同じ調査項目・写真・報告書を使い、発注元が遠隔で確認できる仕組みを目指します。人を全国に派遣するのではなく、現場情報と仕事をつなぐ構想です。</p></div><div class="dx-flow"><div class="dx-step"><b>STEP 01</b><strong>案件依頼</strong><p>企業から調査・施工を依頼</p></div><div class="dx-step"><b>STEP 02</b><strong>現地対応</strong><p>地域の協力会社が訪問</p></div><div class="dx-step"><b>STEP 03</b><strong>情報共有</strong><p>写真・寸法・書類を標準化</p></div><div class="dx-step"><b>STEP 04</b><strong>遠隔確認</strong><p>担当者が情報を確認・判断</p></div><div class="dx-step"><b>STEP 05</b><strong>施工連携</strong><p>施工・報告・履歴へ接続</p></div></div><p class="dx-note">※全国ネットワークは構想段階です。対応地域・業務・品質基準は実証を通じて整備していきます。</p><div class="ctas"><a class="btn btn-main" href="#contact">実証・協業について相談する<svg><use href="#i-arrow"/></svg></a></div></div></section>
   <section class="soft" id="problems">
     <div class="wrap">
       <div class="sec-head reveal"><div class="eyebrow">PROBLEM</div><h2>散らばった情報が、<br>ひとつにつながる。</h2><p>紙・Excelでの管理からアプリに変えると、仕事はどう変わるのか。課題と改善のイメージをアニメーションでご覧ください。以下は改善方法の説明で、個別の導入成果を保証するものではありません。</p></div>

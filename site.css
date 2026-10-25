@@ -65,3 +65,6 @@ body{background:#fcfcf9;letter-spacing:.025em}.header{background:rgba(252,252,24
 @media(max-width:560px){.service-cards .card{padding:32px 24px 26px}.natural-visual img{border-radius:16px 25px 18px 26px}.natural-visual figcaption{font-size:10px;letter-spacing:.06em}}
 @media(prefers-reduced-motion:reduce){.service-cards .card:hover{transform:none}}
 @media print{.service-cards .card{box-shadow:none;transform:none}}
+/* Original company diagram, matched to the current natural palette. */
+.company-visual>svg{border:1px solid #e3e8da;border-radius:24px;background:#fafbf5;box-shadow:0 12px 30px -22px #43513230}
+.company-visual svg>rect:first-of-type{fill:#f1f4e9}.company-visual svg .wire{stroke:#a2b194}.company-visual svg rect[fill="#5273df"]{fill:#7b8f70}.company-visual svg circle[fill="#e0e7ff"]{fill:#e0e8d6}.company-visual svg text[fill]{fill:#738068}.company-visual svg g[fill="#3c4f80"]{fill:#53664a}.company-visual svg circle[fill="#9a89d9"]{fill:#b9a17d}.company-visual{min-width:0}.company-visual .motion{bottom:8px}

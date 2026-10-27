@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://benevolent-paletas-eba6b9.netlify.app/sitemap.xml
